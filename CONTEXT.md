@@ -13,7 +13,7 @@ A set of stapled paper sheets that follows a job through the shop. Contains draw
 _Avoid_: Job packet, traveler
 
 **Odds and Ends**:
-Non-cabinet items that must be delivered to a job site: moldings, shelf pins, hardware, countertop supports, hood inserts, etc.
+Non-cabinet items that must be delivered to a job site: shelf pins, hardware, hood inserts, etc. Once the automated system is in place, this is a transitional concept — moldings and trim are derived from the design file, and remaining items will be captured as structured lists (hardware list, trim list, etc.).
 _Avoid_: Accessories, miscellaneous
 
 **Clipboard Sheets**:
@@ -29,4 +29,8 @@ Screen-to-Machine — Cabinet Vision's module that loads a job and generates CNC
 **Cabinet Vision UCS**:
 User Created Standards — scripts (UCS:M legacy or UCS:JS JavaScript) that automate part-level modifications in Cabinet Vision, such as toe kick cutouts and vent placement.
 _Avoid_: N/A
+
+**Run**:
+An abstract reference line that cabinets mount to. A Run can be any contiguous line of cabinets — a physical wall, an island, or a peninsula. Each Run has a name and a type (`wall`, `island`, `peninsula`).
+_Avoid_: Wall (when referring to the abstract reference, not the physical wall)
 

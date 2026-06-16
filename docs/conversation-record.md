@@ -133,3 +133,155 @@ Job → Room → Run → Cabinet → Part
 - Data Ingestion JSON schema (needs its own dedicated session)
 - Design rules engine approach
 - Output format specifications (Reporting module territory)
+
+---
+
+# Conversation Record — Session 3: JSON Schema Architecture
+
+## Three-Document Architecture
+
+The system is built around **three independent JSON documents** that the Engine evaluates together:
+
+| Document | Role | Analogy |
+|----------|------|---------|
+| **Job Document** | Layout structure: rooms, runs, cabinet positions, one-off overrides, customer info | HTML |
+| **Construction Document** | Assembly templates, joinery rules, standard profiles for a product line/style | CSS |
+| **Material Schedule** | Binds material references to actual material specs (species, thickness, finish) | CSS variables |
+
+The Engine is a **pure evaluator** — it knows *how* to evaluate (resolve dimensions, apply profiles, follow the cascade) but knows *nothing* about cabinets. New shapes, construction styles, and profile types never touch engine code.
+
+The JSON is declarative only. All math lives in the Engine.
+
+## Cascade (CSS-like specificity)
+
+```
+global defaults  →  room overrides  →  cabinet overrides
+   (lowest)             (medium)           (highest)
+```
+
+- `constructionStyle` and `materialRef` appear at global, room, and cabinet levels
+- A cabinet inherits from its room; a room inherits from the global header
+- Job Document overrides take precedence over Construction Document defaults
+
+## Part Types (4 types)
+
+| JSON type | Code treatment | Human meaning |
+|-----------|---------------|---------------|
+| `rectangular` | Sugar → extrusion | Box parts, shelves, panels (shorthand for rect cross-section extrusion) |
+| `extrusion` | Native geometry | Molding, trim, edge banding — constant cross-section along a path |
+| `user-defined` | Imported Rhino geo | Screws, hinges, decorative elements, complex brackets |
+| `auxiliary` | Listed, not rendered | Purchased hardware, fasteners, consumables — BOM only |
+
+## Assembly Tree: Nested
+
+- Assembly templates are **fully nested** in the Construction Document (not a flat ID pool)
+- Every cabinet instantiation creates its own tree — a 36" cabinet's left side is not shared with a 30" cabinet's left side
+- Override system can target any node in the tree by its local path
+
+## Profiles
+
+- **Construction Document**: defines profiles that apply to a whole style (e.g. toe kick notch for every base cabinet in face-frame line)
+- **Job Document**: one-off profiles (customer-specific pipe notch, odd corner cut)
+- Engine resolves all profiles at evaluation time regardless of source
+
+## Resolved
+
+- Named reference for construction/material lookup (not file paths)
+- Three separate source files, optional bundled transport file
+- `auxiliary` kept as distinct part type (not a boolean flag)
+- Engine is a pure evaluator, not domain-aware
+
+## Open / Deferred (from this session)
+
+- Parameterization: how cabinet dimensions (width, height, depth) drive template resolution — more discussion needed
+- Profile format: 2D cross-section definition (line/arc segments in local coords)
+- Construction document JSON schema (detailed)
+- User-defined part tracking across jobs
+
+---
+
+# Conversation Record — Session 4: Python-Based Construction Scripts
+
+## Paradigm Shift
+
+Moved away from the pure-JSON declarative construction document model. Instead, the **Construction Document becomes a Python script** that defines all geometry, relationships, and connection types programmatically.
+
+| Web stack | OCS stack |
+|-----------|-----------|
+| HTML | Job Document (JSON) — rooms, runs, cabinet positions, overrides |
+| CSS | Material Schedule (JSON) — material bindings |
+| JavaScript | Construction scripts (Python) — part definitions, relationships, joinery |
+
+## New Engine Role
+
+The engine is a **generic interpreter** — it knows nothing about cabinets, left sides, or base cabinets. It exposes a minimal API of primitives, and the Python script defines everything domain-specific. Anyone could add definitions for whatever they want to build.
+
+## Geometry Model (reduced from Session 3)
+
+Two fundamental operations, both mapping directly to Rhino:
+
+| Concept | Definition | Rhino function |
+|---------|-----------|----------------|
+| **Panel** | Closed 2D perimeter shape extruded by thickness | `ExtrudeCurve` |
+| **Sweep** | Closed 2D cross-section extruded along a drawn 3D path | `Sweep1` / `Sweep2` |
+
+A square panel's perimeter is 4 lines. Any other shape uses as many lines as needed. Custom user shapes are native Rhino curves.
+
+Part types `rectangular` and `extrusion` from Session 3 collapse into this single model: `rectangular` is sugar for a 4-line panel, `extrusion` is a sweep.
+
+## Minimal Engine API (tentative)
+
+- `Panel(shape, thickness, material, quantity?)`
+- `Sweep(profile, path, material)`
+- Cutout / notch operations (not yet defined)
+- Assembly composition (not yet defined)
+
+## Open / Deferred (from this session)
+
+- How the engine discovers and invokes the right construction script (registration pattern — decorator? class? convention?)
+- Whether Panel and Sweep are separate constructors or a single duck-typed constructor
+- Cutout/notch/modeling operations API
+- Assembly and part tree composition in Python
+- Auxiliary/hardware part representation in Python
+
+---
+
+# Conversation Record — Session 5: Job Tracking Module
+
+## Goal
+Define the scope, data model, and architecture for the Job Tracking module — a Blazor web app that tracks jobs from lead to closed.
+
+## Resolved Decisions
+
+| Area | Decision |
+|------|----------|
+| Platform | ASP.NET Core Blazor web app (.NET ecosystem) |
+| Progress model | Flat milestone checklist (12 items), single default template |
+| Milestone template | 1. Designed / 2. Sent for approval / 3. Approved to build / 4. Production started / 5. Components machined and assembled / 6. Components finished / 7. Final assembly done / 8. Loaded / 9. Delivered / 10. Billed / 11. Paid / 12. Closed |
+| Change orders | Sub-milestone groups that cycle through redesign → requote → reapprove → re-enter production |
+| Phases | Deferred to future (Notes field for now) |
+| Documents | 3 typed buckets: Customer (emails, specs, paint chips, customer photos), Design (drawings, renderings, site photos), Production (cut lists, machining sheets, labels) — manual upload |
+| Email handling | Manual PDF export and upload to Customer bucket; Gmail API integration deferred |
+| Scheduling | Lead date, start date, delivery date only (stage-level estimates too difficult, deferred) |
+| Access roles | Admin (Owner + User) — full access; Shop (production workers + finisher) — read-only |
+| Cost tracking | Quote amount + change order amounts only; QuickBooks handles detailed financials |
+| QuickBooks | CSV export (estimates + invoices) for manual import; live API integration deferred |
+| CNC files | Live at the machines, not in Job Tracking |
+| Gmail integration | Deferred — manual PDF upload to Customer bucket |
+
+## Created Files
+
+- `docs/future-improvements.md` — tracks deferred items (graphical workflow editor, Gmail integration, photo bucket)
+- `docs/adr/0001-milestone-checklist-over-states.md` — rationale for milestone model over state machine
+- `CONTEXT.md` updated — added **Milestone** and **Change Order** terms
+
+## Open / Deferred (for future sessions)
+
+- Scaffold the Blazor project and implement the data model
+- JSON schema for Job Tracking data
+- Document upload UI
+- Milestone checklist UI
+- Role-based access enforcement
+- QuickBooks CSV export format
+- Phases / parallel job tracking
+- Graphical workflow/milestone designer

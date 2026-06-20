@@ -1,0 +1,81 @@
+@namespace JobTracking.App.Components
+@using JobTracking.App.Models
+
+<div class="job-card">
+    <h2 class="job-name">@Job.JobName</h2>
+    <ul class="milestone-list">
+        @foreach (var milestone in Job.Milestones)
+        {
+            <li class="milestone-item @(milestone.IsComplete ? "completed" : "")">
+                <label class="milestone-label">
+                    <input type="checkbox"
+                           class="milestone-checkbox"
+                           checked="@milestone.IsComplete"
+                           @onchange="() => Toggle(milestone)" />
+                    <span class="milestone-order">@milestone.Order.</span>
+                    <span class="milestone-text">@milestone.Label</span>
+                </label>
+            </li>
+        }
+    </ul>
+</div>
+
+<style>
+    .job-card {
+        max-width: 480px;
+        margin: 2rem auto;
+        padding: 1.5rem;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        font-family: system-ui, sans-serif;
+    }
+    .job-name {
+        font-size: 1.25rem;
+        margin: 0 0 1rem 0;
+        color: #333;
+    }
+    .milestone-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+    .milestone-item {
+        padding: 0.4rem 0;
+        border-bottom: 1px solid #f0f0f0;
+    }
+    .milestone-item:last-child {
+        border-bottom: none;
+    }
+    .milestone-label {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        cursor: pointer;
+    }
+    .milestone-checkbox {
+        width: 1.1rem;
+        height: 1.1rem;
+        cursor: pointer;
+    }
+    .milestone-order {
+        color: #999;
+        min-width: 1.5rem;
+    }
+    .milestone-text {
+        color: #333;
+    }
+    .milestone-item.completed .milestone-text {
+        text-decoration: line-through;
+        color: #999;
+    }
+</style>
+
+@code {
+    [Parameter]
+    public Job Job { get; set; } = null!;
+
+    private void Toggle(Milestone milestone)
+    {
+        milestone.IsComplete = !milestone.IsComplete;
+    }
+}

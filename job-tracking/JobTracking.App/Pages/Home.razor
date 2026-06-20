@@ -1,0 +1,11 @@
+﻿@page "/"
+@using JobTracking.App.Models
+@using JobTracking.App.Components
+
+<PageTitle>Job Tracking</PageTitle>
+
+<MilestoneChecklist Job="@job" />
+
+@code {
+    private Job job = Job.SampleJob();
+}

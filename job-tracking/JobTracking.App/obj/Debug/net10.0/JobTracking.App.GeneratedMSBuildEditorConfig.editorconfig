@@ -33,6 +33,14 @@ build_property.EnableCodeStyleSeverity =
 build_metadata.AdditionalFiles.TargetPath = QXBwLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Users/jogbu/Desktop/OCS_Project/job-tracking/JobTracking.App/Components/JobDetail.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xKb2JEZXRhaWwucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/jogbu/Desktop/OCS_Project/job-tracking/JobTracking.App/Components/JobList.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xKb2JMaXN0LnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/jogbu/Desktop/OCS_Project/job-tracking/JobTracking.App/Components/MilestoneChecklist.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xNaWxlc3RvbmVDaGVja2xpc3QucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 

@@ -1,11 +1,45 @@
 ﻿@page "/"
-@using JobTracking.App.Models
-@using JobTracking.App.Components
+@inject IJobService JobService
 
 <PageTitle>Job Tracking</PageTitle>
 
-<MilestoneChecklist Job="@job" />
+<div class="three-column-layout">
+    <div class="col-job-list">
+        <JobList Jobs="@_jobs" SelectedJob="@_selectedJob" OnJobSelected="@HandleJobSelected" />
+    </div>
+    <div class="col-job-detail">
+        <JobDetail Job="@_selectedJob" />
+    </div>
+</div>
+
+<style>
+    .three-column-layout {
+        display: flex;
+        height: calc(100vh - 3.5rem);
+        margin: -1rem -1.5rem;
+    }
+    .col-job-list {
+        width: 320px;
+        min-width: 280px;
+        border-right: 1px solid #ddd;
+    }
+    .col-job-detail {
+        flex: 1;
+        overflow-y: auto;
+    }
+</style>
 
 @code {
-    private Job job = Job.SampleJob();
+    private List<Job> _jobs = [];
+    private Job? _selectedJob;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _jobs = await JobService.GetJobsAsync();
+    }
+
+    private void HandleJobSelected(Job job)
+    {
+        _selectedJob = job;
+    }
 }

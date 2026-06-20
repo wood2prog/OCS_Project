@@ -1,0 +1,94 @@
+@namespace JobTracking.App.Components
+
+<div class="job-list">
+    <h3 class="job-list-header">Jobs</h3>
+    <div class="job-list-items">
+        @foreach (var job in Jobs)
+        {
+            <div class="job-row @(SelectedJob?.Id == job.Id ? "selected" : "")"
+                 @onclick="() => SelectJob(job)">
+                <span class="job-row-name">@job.JobName</span>
+                <span class="status-badge status-@job.Status.Replace(" ", "-").ToLowerInvariant()">@job.Status</span>
+            </div>
+        }
+    </div>
+</div>
+
+<style>
+    .job-list {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+    }
+    .job-list-header {
+        font-size: 1rem;
+        margin: 0;
+        padding: 1rem;
+        border-bottom: 1px solid #eee;
+        color: #333;
+    }
+    .job-list-items {
+        display: flex;
+        flex-direction: column;
+        overflow-y: auto;
+        flex: 1;
+    }
+    .job-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0.75rem 1rem;
+        cursor: pointer;
+        border-bottom: 1px solid #f0f0f0;
+        transition: background-color 0.1s;
+    }
+    .job-row:hover {
+        background-color: #f5f5f5;
+    }
+    .job-row.selected {
+        background-color: #e3f2fd;
+        border-left: 3px solid #1976d2;
+        padding-left: calc(1rem - 3px);
+    }
+    .job-row-name {
+        font-weight: 500;
+        color: #333;
+    }
+    .status-badge {
+        font-size: 0.75rem;
+        padding: 0.2rem 0.5rem;
+        border-radius: 4px;
+        background-color: #eee;
+        color: #555;
+        white-space: nowrap;
+    }
+    .status-new { background-color: #e8f5e9; color: #2e7d32; }
+    .status-in-design { background-color: #fff3e0; color: #ef6c00; }
+    .status-awaiting-approval { background-color: #fff8e1; color: #f57f17; }
+    .status-approved { background-color: #e8f5e9; color: #2e7d32; }
+    .status-in-production { background-color: #e3f2fd; color: #1565c0; }
+    .status-machined { background-color: #f3e5f5; color: #7b1fa2; }
+    .status-finished { background-color: #e8f5e9; color: #2e7d32; }
+    .status-final-assembly { background-color: #fce4ec; color: #c62828; }
+    .status-loaded { background-color: #e0f7fa; color: #00838f; }
+    .status-delivered { background-color: #e8f5e9; color: #2e7d32; }
+    .status-billing { background-color: #fff3e0; color: #ef6c00; }
+    .status-paid { background-color: #e8f5e9; color: #2e7d32; }
+    .status-closed { background-color: #f5f5f5; color: #757575; }
+</style>
+
+@code {
+    [Parameter]
+    public List<Job> Jobs { get; set; } = [];
+
+    [Parameter]
+    public Job? SelectedJob { get; set; }
+
+    [Parameter]
+    public EventCallback<Job> OnJobSelected { get; set; }
+
+    private void SelectJob(Job job)
+    {
+        OnJobSelected.InvokeAsync(job);
+    }
+}

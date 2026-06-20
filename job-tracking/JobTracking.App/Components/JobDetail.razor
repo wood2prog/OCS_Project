@@ -1,0 +1,33 @@
+@namespace JobTracking.App.Components
+
+@if (Job is null)
+{
+    <div class="job-detail-empty">
+        <p>Select a job to view details</p>
+    </div>
+}
+else
+{
+    <div class="job-detail">
+        <MilestoneChecklist Job="@Job" />
+    </div>
+}
+
+<style>
+    .job-detail-empty {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+        color: #999;
+        font-style: italic;
+    }
+    .job-detail {
+        height: 100%;
+    }
+</style>
+
+@code {
+    [Parameter]
+    public Job? Job { get; set; }
+}

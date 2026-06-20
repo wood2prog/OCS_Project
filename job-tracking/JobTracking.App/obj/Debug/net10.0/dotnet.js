@@ -5,7 +5,7 @@ var e=!1;const t=async()=>WebAssembly.validate(new Uint8Array([0,97,115,109,1,0,
   "mainAssemblyName": "JobTracking.App",
   "applicationEnvironment": "Development",
   "resources": {
-    "hash": "sha256-M36zL2ygq08D3gnKhR8fpFNaE9MCMOKK6yhCdWQOd+E=",
+    "hash": "sha256-rwMbZddZwKY4ianaX77FyQxy9SY6IlkN8hPrtbHtuhM=",
     "jsModuleNative": [
       {
         "name": "dotnet.native.ikrs475e5v.js"
@@ -1242,16 +1242,16 @@ var e=!1;const t=async()=>WebAssembly.validate(new Uint8Array([0,97,115,109,1,0,
       },
       {
         "virtualPath": "JobTracking.App.wasm",
-        "name": "JobTracking.App.jncfbqrz65.wasm",
-        "hash": "sha256-z/A8vp2ViPQZj2D0tcI1czYgl6PvlCDM3M3bEBotcTQ=",
+        "name": "JobTracking.App.hd3vcply19.wasm",
+        "hash": "sha256-1YLZizldv6JUU5vQlyr9oH252CSg0cCtReX/VJSr0OM=",
         "cache": "force-cache"
       }
     ],
     "pdb": [
       {
         "virtualPath": "JobTracking.App.pdb",
-        "name": "JobTracking.App.h5d2q8fgy5.pdb",
-        "hash": "sha256-6+ai2VvLJsTcfYfgAlcw0tGMDGg7LtotHjdheUfH1JI=",
+        "name": "JobTracking.App.m83nscywhe.pdb",
+        "hash": "sha256-2iNRHNqILBi2J8tlrnFW2MiXmHdRKL57kvBJkiuScIA=",
         "cache": "force-cache"
       }
     ],

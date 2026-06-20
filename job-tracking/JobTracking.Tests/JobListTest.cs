@@ -9,8 +9,8 @@ public class JobListTest : BunitContext
 {
     private static List<Job> SampleJobs() =>
     [
-        new() { Id = "a", JobName = "Job A" },
-        new() { Id = "b", JobName = "Job B" },
+        new() { Id = 1, JobName = "Job A" },
+        new() { Id = 2, JobName = "Job B" },
     ];
 
     [Fact]
@@ -61,5 +61,19 @@ public class JobListTest : BunitContext
         var cut = Render<JobList>(p => p.Add(c => c.Jobs, SampleJobs()));
         var badges = cut.FindAll(".status-badge");
         Assert.Equal(2, badges.Count);
+    }
+
+    [Fact]
+    public void Job_row_shows_job_number_and_customer_name()
+    {
+        var jobs = new List<Job>
+        {
+            new() { Id = 1, JobNumber = 1001, CustomerName = "Alpha Co", JobName = "Alpha Kitchen" }
+        };
+        var cut = Render<JobList>(p => p.Add(c => c.Jobs, jobs));
+        var row = cut.Find(".job-row");
+
+        Assert.Contains("#1001", row.TextContent);
+        Assert.Contains("Alpha Co", row.TextContent);
     }
 }

@@ -5,4 +5,5 @@ namespace JobTracking.App.Services;
 public interface IJobService
 {
     Task<List<Job>> GetJobsAsync();
+    Task<Job> ToggleMilestoneAsync(int jobId, int milestoneId, bool isComplete);
 }

@@ -7,7 +7,10 @@
         {
             <div class="job-row @(SelectedJob?.Id == job.Id ? "selected" : "")"
                  @onclick="() => SelectJob(job)">
-                <span class="job-row-name">@job.JobName</span>
+                <div class="job-row-info">
+                    <span class="job-row-name">@job.JobName</span>
+                    <span class="job-row-detail">#@job.JobNumber - @job.CustomerName</span>
+                </div>
                 <span class="status-badge status-@job.Status.Replace(" ", "-").ToLowerInvariant()">@job.Status</span>
             </div>
         }
@@ -50,9 +53,17 @@
         border-left: 3px solid #1976d2;
         padding-left: calc(1rem - 3px);
     }
+    .job-row-info {
+        display: flex;
+        flex-direction: column;
+    }
     .job-row-name {
         font-weight: 500;
         color: #333;
+    }
+    .job-row-detail {
+        font-size: 0.8rem;
+        color: #777;
     }
     .status-badge {
         font-size: 0.75rem;

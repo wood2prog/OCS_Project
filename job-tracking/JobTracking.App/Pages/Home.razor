@@ -8,7 +8,7 @@
         <JobList Jobs="@_jobs" SelectedJob="@_selectedJob" OnJobSelected="@HandleJobSelected" />
     </div>
     <div class="col-job-detail">
-        <JobDetail Job="@_selectedJob" />
+        <JobDetail Job="@_selectedJob" OnMilestoneToggled="@HandleMilestoneToggled" />
     </div>
 </div>
 
@@ -36,6 +36,18 @@
     protected override async Task OnInitializedAsync()
     {
         _jobs = await JobService.GetJobsAsync();
+    }
+
+    private async Task HandleMilestoneToggled((int JobId, int MilestoneId, bool IsComplete) args)
+    {
+        var updated = await JobService.ToggleMilestoneAsync(args.JobId, args.MilestoneId, args.IsComplete);
+
+        var index = _jobs.FindIndex(j => j.Id == args.JobId);
+        if (index >= 0)
+            _jobs[index] = updated;
+
+        if (_selectedJob?.Id == args.JobId)
+            _selectedJob = updated;
     }
 
     private void HandleJobSelected(Job job)

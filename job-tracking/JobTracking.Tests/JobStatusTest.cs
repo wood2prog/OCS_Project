@@ -53,4 +53,19 @@ public class JobStatusTest
 
         Assert.Equal("Closed", job.Status);
     }
+
+    [Fact]
+    public void Status_is_unaffected_by_JobNumber_and_CustomerName()
+    {
+        var job = new Job
+        {
+            Id = 42,
+            JobNumber = 1005,
+            CustomerName = "Test Corp",
+            JobName = "Test Job"
+        };
+        job.Milestones.Add(new Milestone { Id = 1, JobId = 42, Order = 1, Label = "Designed", IsComplete = true });
+
+        Assert.Equal("In Design", job.Status);
+    }
 }

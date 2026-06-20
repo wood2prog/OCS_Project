@@ -9,7 +9,7 @@
 else
 {
     <div class="job-detail">
-        <MilestoneChecklist Job="@Job" />
+        <MilestoneChecklist Job="@Job" OnMilestoneToggled="@OnMilestoneToggled" />
     </div>
 }
 
@@ -30,4 +30,7 @@ else
 @code {
     [Parameter]
     public Job? Job { get; set; }
+
+    [Parameter]
+    public EventCallback<(int JobId, int MilestoneId, bool IsComplete)> OnMilestoneToggled { get; set; }
 }

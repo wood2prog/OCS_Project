@@ -11,7 +11,7 @@
                     <input type="checkbox"
                            class="milestone-checkbox"
                            checked="@milestone.IsComplete"
-                           @onchange="() => Toggle(milestone)" />
+                           @onchange="() => OnMilestoneToggled.InvokeAsync((Job.Id, milestone.Id, !milestone.IsComplete))" />
                     <span class="milestone-order">@milestone.Order.</span>
                     <span class="milestone-text">@milestone.Label</span>
                 </label>
@@ -74,8 +74,6 @@
     [Parameter]
     public Job Job { get; set; } = null!;
 
-    private void Toggle(Milestone milestone)
-    {
-        milestone.IsComplete = !milestone.IsComplete;
-    }
+    [Parameter]
+    public EventCallback<(int JobId, int MilestoneId, bool IsComplete)> OnMilestoneToggled { get; set; }
 }

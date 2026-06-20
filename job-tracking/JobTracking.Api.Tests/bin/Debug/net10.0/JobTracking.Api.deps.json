@@ -8,11 +8,35 @@
     ".NETCoreApp,Version=v10.0": {
       "JobTracking.Api/1.0.0": {
         "dependencies": {
+          "JobTracking.App": "1.0.0",
+          "Microsoft.AspNetCore.Components.WebAssembly.Server": "10.0.9",
           "Microsoft.AspNetCore.OpenApi": "10.0.9",
           "Microsoft.EntityFrameworkCore.Sqlite": "10.0.9"
         },
         "runtime": {
           "JobTracking.Api.dll": {}
+        }
+      },
+      "Microsoft.AspNetCore.Components.WebAssembly/10.0.9": {
+        "dependencies": {
+          "Microsoft.JSInterop.WebAssembly": "10.0.9"
+        },
+        "runtime": {
+          "lib/net10.0/Microsoft.AspNetCore.Components.WebAssembly.dll": {
+            "assemblyVersion": "10.0.9.0",
+            "fileVersion": "10.0.926.27113"
+          }
+        }
+      },
+      "Microsoft.AspNetCore.Components.WebAssembly.Server/10.0.9": {
+        "dependencies": {
+          "Microsoft.AspNetCore.Components.WebAssembly": "10.0.9"
+        },
+        "runtime": {
+          "lib/net10.0/Microsoft.AspNetCore.Components.WebAssembly.Server.dll": {
+            "assemblyVersion": "10.0.9.0",
+            "fileVersion": "10.0.926.27113"
+          }
         }
       },
       "Microsoft.AspNetCore.OpenApi/10.0.9": {
@@ -93,6 +117,14 @@
         "runtime": {
           "lib/net10.0/Microsoft.Extensions.DependencyModel.dll": {
             "assemblyVersion": "10.0.0.9",
+            "fileVersion": "10.0.926.27113"
+          }
+        }
+      },
+      "Microsoft.JSInterop.WebAssembly/10.0.9": {
+        "runtime": {
+          "lib/net10.0/Microsoft.JSInterop.WebAssembly.dll": {
+            "assemblyVersion": "10.0.9.0",
             "fileVersion": "10.0.926.27113"
           }
         }
@@ -254,6 +286,17 @@
             "fileVersion": "2.1.11.2622"
           }
         }
+      },
+      "JobTracking.App/1.0.0": {
+        "dependencies": {
+          "Microsoft.AspNetCore.Components.WebAssembly": "10.0.9"
+        },
+        "runtime": {
+          "JobTracking.App.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
       }
     }
   },
@@ -262,6 +305,20 @@
       "type": "project",
       "serviceable": false,
       "sha512": ""
+    },
+    "Microsoft.AspNetCore.Components.WebAssembly/10.0.9": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-tBv68AsZ3r6z2QdV2m3cSSKUCbvEscN8REpHxcUs22vlR6UjTz6IKdInKNREkJ/3G1AQrBKrRTdrfrHVffE8Iw==",
+      "path": "microsoft.aspnetcore.components.webassembly/10.0.9",
+      "hashPath": "microsoft.aspnetcore.components.webassembly.10.0.9.nupkg.sha512"
+    },
+    "Microsoft.AspNetCore.Components.WebAssembly.Server/10.0.9": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-ZTtYvBILwGxhIiXi1L03ETBBOgMmizStu7dO/YblK6rPTa27wpEgYKp5Z9bUfr+wsFvHIDWd/ZMGb9on41f6yw==",
+      "path": "microsoft.aspnetcore.components.webassembly.server/10.0.9",
+      "hashPath": "microsoft.aspnetcore.components.webassembly.server.10.0.9.nupkg.sha512"
     },
     "Microsoft.AspNetCore.OpenApi/10.0.9": {
       "type": "package",
@@ -319,6 +376,13 @@
       "path": "microsoft.extensions.dependencymodel/10.0.9",
       "hashPath": "microsoft.extensions.dependencymodel.10.0.9.nupkg.sha512"
     },
+    "Microsoft.JSInterop.WebAssembly/10.0.9": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-4G0A7GuQrtCAes8PuJPTDUcy+lCrxHWjr8ZlkDOa4h8a2Txj1XdhbXKLnld2vMY5EyZNC5jZXxa1xTD/AOCUlw==",
+      "path": "microsoft.jsinterop.webassembly/10.0.9",
+      "hashPath": "microsoft.jsinterop.webassembly.10.0.9.nupkg.sha512"
+    },
     "Microsoft.OpenApi/2.0.0": {
       "type": "package",
       "serviceable": true,
@@ -353,6 +417,11 @@
       "sha512": "sha512-Y/0ZkR+r0Cg3DQFuCl1RBnv/tmxpIZRU3HUvelPw6MVaKHwYYR8YNvgs0vuNuXCMvlyJ+Fh88U1D4tah1tt6qw==",
       "path": "sqlitepclraw.provider.e_sqlite3/2.1.11",
       "hashPath": "sqlitepclraw.provider.e_sqlite3.2.1.11.nupkg.sha512"
+    },
+    "JobTracking.App/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
     }
   }
 }

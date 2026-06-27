@@ -1,37 +1,12 @@
 {
   "Version": 1,
   "WorkspaceRootPath": "C:\\Users\\jogbu\\Desktop\\OCS_Project\\job-tracking\\",
-  "Documents": [
-    {
-      "AbsoluteMoniker": "D:0:0:{8CF8B2E5-3877-AC54-5038-1705A534634B}|JobTracking.App\\JobTracking.App.csproj|c:\\users\\jogbu\\desktop\\ocs_project\\job-tracking\\jobtracking.app\\components\\joblist.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{8CF8B2E5-3877-AC54-5038-1705A534634B}|JobTracking.App\\JobTracking.App.csproj|solutionrelative:jobtracking.app\\components\\joblist.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    }
-  ],
+  "Documents": [],
   "DocumentGroupContainers": [
     {
       "Orientation": 0,
       "VerticalTabListWidth": 256,
-      "DocumentGroups": [
-        {
-          "DockedWidth": 200,
-          "SelectedChildIndex": 0,
-          "Children": [
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "JobList.razor",
-              "DocumentMoniker": "C:\\Users\\jogbu\\Desktop\\OCS_Project\\job-tracking\\JobTracking.App\\Components\\JobList.razor",
-              "RelativeDocumentMoniker": "JobTracking.App\\Components\\JobList.razor",
-              "ToolTip": "C:\\Users\\jogbu\\Desktop\\OCS_Project\\job-tracking\\JobTracking.App\\Components\\JobList.razor",
-              "RelativeToolTip": "JobTracking.App\\Components\\JobList.razor",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABMAAAAHAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-06-20T17:56:04.411Z",
-              "EditorCaption": ""
-            }
-          ]
-        }
-      ]
+      "DocumentGroups": []
     }
   ]
 }

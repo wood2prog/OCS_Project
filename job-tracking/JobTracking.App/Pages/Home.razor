@@ -5,12 +5,17 @@
 
 <div class="three-column-layout">
     <div class="col-job-list">
-        <JobList Jobs="@_jobs" SelectedJob="@_selectedJob" OnJobSelected="@HandleJobSelected" />
+        <JobList Jobs="@_jobs" SelectedJob="@_selectedJob" OnJobSelected="@HandleJobSelected" OnAddJob="@HandleAddJob" />
     </div>
     <div class="col-job-detail">
         <JobDetail Job="@_selectedJob" OnMilestoneToggled="@HandleMilestoneToggled" />
     </div>
 </div>
+
+@if (_showAddJobModal)
+{
+    <AddJobModal Customers="@_customers" OnJobCreated="@HandleJobCreated" OnDismiss="@HandleDismiss" />
+}
 
 <style>
     .three-column-layout {
@@ -32,6 +37,8 @@
 @code {
     private List<Job> _jobs = [];
     private Job? _selectedJob;
+    private bool _showAddJobModal;
+    private List<Customer> _customers = [];
 
     protected override async Task OnInitializedAsync()
     {
@@ -53,5 +60,24 @@
     private void HandleJobSelected(Job job)
     {
         _selectedJob = job;
+    }
+
+    private async Task HandleAddJob()
+    {
+        _customers = await JobService.GetCustomersAsync();
+        _showAddJobModal = true;
+    }
+
+    private async Task HandleJobCreated(CreateJobRequest request)
+    {
+        var created = await JobService.CreateJobAsync(request);
+        _showAddJobModal = false;
+        _jobs = await JobService.GetJobsAsync();
+        _selectedJob = created;
+    }
+
+    private void HandleDismiss()
+    {
+        _showAddJobModal = false;
     }
 }

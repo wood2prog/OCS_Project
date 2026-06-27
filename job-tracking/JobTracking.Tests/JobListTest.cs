@@ -76,4 +76,28 @@ public class JobListTest : BunitContext
         Assert.Contains("#1001", row.TextContent);
         Assert.Contains("Alpha Co", row.TextContent);
     }
+
+    [Fact]
+    public void Renders_add_job_button_in_toolbar()
+    {
+        var cut = Render<JobList>(p => p.Add(c => c.Jobs, SampleJobs()));
+
+        var button = cut.Find(".add-job-button");
+        Assert.Contains("Add Job", button.TextContent);
+    }
+
+    [Fact]
+    public void Clicking_add_job_fires_OnAddJob_callback()
+    {
+        var invoked = false;
+        var cut = Render<JobList>(p =>
+        {
+            p.Add(c => c.Jobs, SampleJobs());
+            p.Add(c => c.OnAddJob, (EventCallback)(EventCallback.Factory.Create(this, (Action)(() => invoked = true))));
+        });
+
+        cut.Find(".add-job-button").Click();
+
+        Assert.True(invoked);
+    }
 }

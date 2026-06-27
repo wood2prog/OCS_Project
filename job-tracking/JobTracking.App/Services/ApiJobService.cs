@@ -39,4 +39,34 @@ public class ApiJobService : IJobService
 
         return job!;
     }
+
+    public async Task<Job> CreateJobAsync(CreateJobRequest dto)
+    {
+        var response = await _http.PostAsJsonAsync("/api/jobs", dto, new JsonSerializerOptions
+        {
+            PropertyNameCaseInsensitive = true,
+            PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+        });
+
+        response.EnsureSuccessStatusCode();
+
+        var job = await response.Content.ReadFromJsonAsync<Job>(new JsonSerializerOptions
+        {
+            PropertyNameCaseInsensitive = true,
+            PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+        });
+
+        return job!;
+    }
+
+    public async Task<List<Customer>> GetCustomersAsync()
+    {
+        var customers = await _http.GetFromJsonAsync<List<Customer>>("/api/customers", new JsonSerializerOptions
+        {
+            PropertyNameCaseInsensitive = true,
+            PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+        });
+
+        return customers ?? [];
+    }
 }

@@ -92,6 +92,87 @@ public class ApiJobServiceTest
         Assert.Equal(1, result.Id);
         Assert.True(result.Milestones[0].IsComplete);
     }
+
+    [Fact]
+    public async Task CreateJobAsync_sends_post_and_returns_created_job()
+    {
+        var request = new CreateJobRequest
+        {
+            CustomerId = 1,
+            JobName = "New Job",
+            LeadDate = new DateTime(2026, 6, 1),
+            StartDate = new DateTime(2026, 6, 15),
+            DeliveryDate = new DateTime(2026, 7, 15),
+            QuoteAmount = 5000m,
+        };
+
+        var createdJob = new Job
+        {
+            Id = 42,
+            JobNumber = 1005,
+            Customer = new() { Name = "Thompson" },
+            JobName = "New Job",
+            Milestones = []
+        };
+
+        HttpRequestMessage? captured = null;
+        var handler = new MockHttpMessageHandler(requestMessage =>
+        {
+            captured = requestMessage;
+            return new HttpResponseMessage(HttpStatusCode.Created)
+            {
+                Content = JsonContent.Create(createdJob, options: JsonOptions)
+            };
+        });
+
+        var client = new HttpClient(handler) { BaseAddress = new Uri("http://localhost:5271") };
+        var service = new ApiJobService(client);
+
+        var result = await service.CreateJobAsync(request);
+
+        Assert.NotNull(captured);
+        Assert.Equal(HttpMethod.Post, captured!.Method);
+        Assert.Equal("http://localhost:5271/api/jobs", captured.RequestUri!.ToString());
+
+        var body = await captured.Content.ReadFromJsonAsync<CreateJobRequest>(JsonOptions) ?? new();
+        Assert.NotNull(body);
+        Assert.Equal(1, body!.CustomerId);
+        Assert.Equal("New Job", body.JobName);
+        Assert.Equal(new DateTime(2026, 6, 1), body.LeadDate);
+        Assert.Equal(new DateTime(2026, 6, 15), body.StartDate);
+        Assert.Equal(new DateTime(2026, 7, 15), body.DeliveryDate);
+        Assert.Equal(5000m, body.QuoteAmount);
+
+        Assert.Equal(42, result.Id);
+        Assert.Equal("New Job", result.JobName);
+    }
+
+    [Fact]
+    public async Task GetCustomersAsync_returns_deserialized_customers()
+    {
+        var apiResponse = new[]
+        {
+            new Customer { Id = 1, Name = "Alpha Co" },
+            new Customer { Id = 2, Name = "Beta Inc" },
+        };
+
+        var handler = new MockHttpMessageHandler(_ =>
+            new HttpResponseMessage(HttpStatusCode.OK)
+            {
+                Content = JsonContent.Create(apiResponse, options: JsonOptions)
+            });
+
+        var client = new HttpClient(handler) { BaseAddress = new Uri("http://localhost:5271") };
+        var service = new ApiJobService(client);
+
+        var customers = await service.GetCustomersAsync();
+
+        Assert.Equal(2, customers.Count);
+        Assert.Equal(1, customers[0].Id);
+        Assert.Equal("Alpha Co", customers[0].Name);
+        Assert.Equal(2, customers[1].Id);
+        Assert.Equal("Beta Inc", customers[1].Name);
+    }
 }
 
 public class MockHttpMessageHandler : HttpMessageHandler

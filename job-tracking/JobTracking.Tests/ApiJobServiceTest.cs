@@ -24,7 +24,7 @@ public class ApiJobServiceTest
             {
                 Id = 1,
                 JobNumber = 1000,
-                CustomerName = "Thompson",
+                Customer = new() { Name = "Thompson" },
                 JobName = "Thompson Kitchen Remodel",
                 Milestones =
                 [
@@ -62,7 +62,7 @@ public class ApiJobServiceTest
         {
             Id = 1,
             JobNumber = 1000,
-            CustomerName = "Thompson",
+            Customer = new() { Name = "Thompson" },
             JobName = "Thompson Kitchen Remodel",
             Milestones =
             [

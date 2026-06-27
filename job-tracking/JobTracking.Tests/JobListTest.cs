@@ -68,7 +68,7 @@ public class JobListTest : BunitContext
     {
         var jobs = new List<Job>
         {
-            new() { Id = 1, JobNumber = 1001, CustomerName = "Alpha Co", JobName = "Alpha Kitchen" }
+            new() { Id = 1, JobNumber = 1001, Customer = new Customer { Name = "Alpha Co" }, JobName = "Alpha Kitchen" }
         };
         var cut = Render<JobList>(p => p.Add(c => c.Jobs, jobs));
         var row = cut.Find(".job-row");

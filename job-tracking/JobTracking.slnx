@@ -1,6 +1,6 @@
 <Solution>
+  <Project Path="JobTracking.Api/JobTracking.Api.csproj" />
   <Project Path="JobTracking.App/JobTracking.App.csproj" />
   <Project Path="JobTracking.Tests/JobTracking.Tests.csproj" />
-  <Project Path="JobTracking.Api/JobTracking.Api.csproj" />
   <Project Path="JobTracking.Api.Tests/JobTracking.Api.Tests.csproj" />
 </Solution>

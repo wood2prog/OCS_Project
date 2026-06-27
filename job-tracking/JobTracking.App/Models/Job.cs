@@ -4,8 +4,9 @@ public class Job
 {
     public int Id { get; set; }
     public int JobNumber { get; set; }
-    public string CustomerName { get; set; } = string.Empty;
+    public Customer? Customer { get; set; }
     public string JobName { get; set; } = string.Empty;
+    public string CustomerName => Customer?.Name ?? string.Empty;
     public List<Milestone> Milestones { get; set; } = [];
 
     public string Status

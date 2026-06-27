@@ -207,9 +207,6 @@ C:\Users\jogbu\Desktop\OCS_Project\job-tracking\JobTracking.App\bin\Debug\net10.
 C:\Users\jogbu\Desktop\OCS_Project\job-tracking\JobTracking.App\bin\Debug\net10.0\wwwroot\_framework\netstandard.qv9s71s9sf.wasm
 C:\Users\jogbu\Desktop\OCS_Project\job-tracking\JobTracking.App\bin\Debug\net10.0\wwwroot\_framework\System.Private.CoreLib.9s549gpy7m.wasm
 C:\Users\jogbu\Desktop\OCS_Project\job-tracking\JobTracking.App\bin\Debug\net10.0\wwwroot\_framework\Microsoft.DotNet.HotReload.WebAssembly.Browser.r0uvx0ebhi.wasm
-C:\Users\jogbu\Desktop\OCS_Project\job-tracking\JobTracking.App\bin\Debug\net10.0\wwwroot\_framework\JobTracking.App.shdxevg2nt.wasm
-C:\Users\jogbu\Desktop\OCS_Project\job-tracking\JobTracking.App\bin\Debug\net10.0\wwwroot\_framework\JobTracking.App.xknzkq9foq.pdb
-C:\Users\jogbu\Desktop\OCS_Project\job-tracking\JobTracking.App\bin\Debug\net10.0\wwwroot\_framework\dotnet.d7cnj8le1v.js
 C:\Users\jogbu\Desktop\OCS_Project\job-tracking\JobTracking.App\bin\Debug\net10.0\wwwroot\_framework\blazor.webassembly.958z1vx7fr.js.gz
 C:\Users\jogbu\Desktop\OCS_Project\job-tracking\JobTracking.App\bin\Debug\net10.0\wwwroot\_framework\Microsoft.AspNetCore.Authorization.wp5b4xwrtz.wasm.gz
 C:\Users\jogbu\Desktop\OCS_Project\job-tracking\JobTracking.App\bin\Debug\net10.0\wwwroot\_framework\Microsoft.AspNetCore.Components.4payhwuyuh.wasm.gz
@@ -418,9 +415,6 @@ C:\Users\jogbu\Desktop\OCS_Project\job-tracking\JobTracking.App\bin\Debug\net10.
 C:\Users\jogbu\Desktop\OCS_Project\job-tracking\JobTracking.App\bin\Debug\net10.0\wwwroot\_framework\icudt_EFIGS.tptq2av103.dat.gz
 C:\Users\jogbu\Desktop\OCS_Project\job-tracking\JobTracking.App\bin\Debug\net10.0\wwwroot\_framework\icudt_no_CJK.lfu7j35m59.dat.gz
 C:\Users\jogbu\Desktop\OCS_Project\job-tracking\JobTracking.App\bin\Debug\net10.0\wwwroot\_framework\Microsoft.DotNet.HotReload.WebAssembly.Browser.r0uvx0ebhi.wasm.gz
-C:\Users\jogbu\Desktop\OCS_Project\job-tracking\JobTracking.App\bin\Debug\net10.0\wwwroot\_framework\JobTracking.App.shdxevg2nt.wasm.gz
-C:\Users\jogbu\Desktop\OCS_Project\job-tracking\JobTracking.App\bin\Debug\net10.0\wwwroot\_framework\JobTracking.App.xknzkq9foq.pdb.gz
-C:\Users\jogbu\Desktop\OCS_Project\job-tracking\JobTracking.App\bin\Debug\net10.0\wwwroot\_framework\dotnet.d7cnj8le1v.js.gz
 C:\Users\jogbu\Desktop\OCS_Project\job-tracking\JobTracking.App\bin\Debug\net10.0\JobTracking.App.staticwebassets.runtime.json
 C:\Users\jogbu\Desktop\OCS_Project\job-tracking\JobTracking.App\bin\Debug\net10.0\JobTracking.App.staticwebassets.endpoints.json
 C:\Users\jogbu\Desktop\OCS_Project\job-tracking\JobTracking.App\bin\Debug\net10.0\JobTracking.App.dll
@@ -1112,10 +1106,6 @@ C:\Users\jogbu\Desktop\OCS_Project\job-tracking\JobTracking.App\obj\Debug\net10.
 C:\Users\jogbu\Desktop\OCS_Project\job-tracking\JobTracking.App\obj\Debug\net10.0\compressed\4ieas50qi0-{0}-tptq2av103-tptq2av103.gz
 C:\Users\jogbu\Desktop\OCS_Project\job-tracking\JobTracking.App\obj\Debug\net10.0\compressed\nsmqjw1j65-{0}-lfu7j35m59-lfu7j35m59.gz
 C:\Users\jogbu\Desktop\OCS_Project\job-tracking\JobTracking.App\obj\Debug\net10.0\compressed\ktyxhkc7nm-{0}-r0uvx0ebhi-r0uvx0ebhi.gz
-C:\Users\jogbu\Desktop\OCS_Project\job-tracking\JobTracking.App\obj\Debug\net10.0\compressed\7k5bl9woxe-{0}-shdxevg2nt-shdxevg2nt.gz
-C:\Users\jogbu\Desktop\OCS_Project\job-tracking\JobTracking.App\obj\Debug\net10.0\compressed\maxthq82cz-{0}-xknzkq9foq-xknzkq9foq.gz
-C:\Users\jogbu\Desktop\OCS_Project\job-tracking\JobTracking.App\obj\Debug\net10.0\compressed\krdhdhqzx1-{0}-d7cnj8le1v-d7cnj8le1v.gz
-C:\Users\jogbu\Desktop\OCS_Project\job-tracking\JobTracking.App\obj\Debug\net10.0\compressed\prpo0qisg2-{0}-jj53z42l6g-jj53z42l6g.gz
 C:\Users\jogbu\Desktop\OCS_Project\job-tracking\JobTracking.App\obj\Debug\net10.0\staticwebassets.build.json
 C:\Users\jogbu\Desktop\OCS_Project\job-tracking\JobTracking.App\obj\Debug\net10.0\staticwebassets.build.json.cache
 C:\Users\jogbu\Desktop\OCS_Project\job-tracking\JobTracking.App\obj\Debug\net10.0\staticwebassets.development.json
@@ -1126,3 +1116,13 @@ C:\Users\jogbu\Desktop\OCS_Project\job-tracking\JobTracking.App\obj\Debug\net10.
 C:\Users\jogbu\Desktop\OCS_Project\job-tracking\JobTracking.App\obj\Debug\net10.0\refint\JobTracking.App.dll
 C:\Users\jogbu\Desktop\OCS_Project\job-tracking\JobTracking.App\obj\Debug\net10.0\JobTracking.App.pdb
 C:\Users\jogbu\Desktop\OCS_Project\job-tracking\JobTracking.App\obj\Debug\net10.0\ref\JobTracking.App.dll
+C:\Users\jogbu\Desktop\OCS_Project\job-tracking\JobTracking.App\bin\Debug\net10.0\wwwroot\_framework\JobTracking.App.nioc7xk8no.wasm
+C:\Users\jogbu\Desktop\OCS_Project\job-tracking\JobTracking.App\bin\Debug\net10.0\wwwroot\_framework\JobTracking.App.mkweoztelu.pdb
+C:\Users\jogbu\Desktop\OCS_Project\job-tracking\JobTracking.App\bin\Debug\net10.0\wwwroot\_framework\dotnet.yjh05krehg.js
+C:\Users\jogbu\Desktop\OCS_Project\job-tracking\JobTracking.App\bin\Debug\net10.0\wwwroot\_framework\JobTracking.App.nioc7xk8no.wasm.gz
+C:\Users\jogbu\Desktop\OCS_Project\job-tracking\JobTracking.App\bin\Debug\net10.0\wwwroot\_framework\JobTracking.App.mkweoztelu.pdb.gz
+C:\Users\jogbu\Desktop\OCS_Project\job-tracking\JobTracking.App\bin\Debug\net10.0\wwwroot\_framework\dotnet.yjh05krehg.js.gz
+C:\Users\jogbu\Desktop\OCS_Project\job-tracking\JobTracking.App\obj\Debug\net10.0\compressed\7k5bl9woxe-{0}-nioc7xk8no-nioc7xk8no.gz
+C:\Users\jogbu\Desktop\OCS_Project\job-tracking\JobTracking.App\obj\Debug\net10.0\compressed\maxthq82cz-{0}-mkweoztelu-mkweoztelu.gz
+C:\Users\jogbu\Desktop\OCS_Project\job-tracking\JobTracking.App\obj\Debug\net10.0\compressed\krdhdhqzx1-{0}-yjh05krehg-yjh05krehg.gz
+C:\Users\jogbu\Desktop\OCS_Project\job-tracking\JobTracking.App\obj\Debug\net10.0\compressed\prpo0qisg2-{0}-75bude8udd-75bude8udd.gz

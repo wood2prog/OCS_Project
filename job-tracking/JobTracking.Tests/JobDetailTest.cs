@@ -10,7 +10,7 @@ public class JobDetailTest : BunitContext
     {
         Id = 1,
         JobNumber = 1000,
-        CustomerName = "Test Co",
+        Customer = new() { Name = "Test Co" },
         JobName = "Smithers Residence",
         Milestones =
         [

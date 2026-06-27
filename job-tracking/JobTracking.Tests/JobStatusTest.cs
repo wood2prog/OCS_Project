@@ -61,7 +61,7 @@ public class JobStatusTest
         {
             Id = 42,
             JobNumber = 1005,
-            CustomerName = "Test Corp",
+            Customer = new Customer { Name = "Test Corp" },
             JobName = "Test Job"
         };
         job.Milestones.Add(new Milestone { Id = 1, JobId = 42, Order = 1, Label = "Designed", IsComplete = true });

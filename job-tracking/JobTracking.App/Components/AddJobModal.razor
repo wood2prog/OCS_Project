@@ -1,6 +1,6 @@
 @namespace JobTracking.App.Components
 
-<div class="modal-backdrop" @onclick="HandleBackdropClick">
+<div class="modal-backdrop">
     <div class="modal-card" @onclick:stopPropagation>
         <h3 class="modal-title">Add Job</h3>
 
@@ -161,8 +161,4 @@
         await OnDismiss.InvokeAsync();
     }
 
-    private async Task HandleBackdropClick()
-    {
-        await OnDismiss.InvokeAsync();
-    }
 }

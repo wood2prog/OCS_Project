@@ -275,6 +275,10 @@ Define the scope, data model, and architecture for the Job Tracking module — a
 - `docs/adr/0001-milestone-checklist-over-states.md` — rationale for milestone model over state machine
 - `CONTEXT.md` updated — added **Milestone** and **Change Order** terms
 
+## Known Issues
+
+- **NU1903 — CVE-2025-6965**: `SQLitePCLRaw.lib.e_sqlite3` 2.1.11 (transitive via `Microsoft.EntityFrameworkCore.Sqlite` 10.0.9) has a critical memory-corruption vulnerability in bundled SQLite < 3.50.2. No patched 2.x exists (package line deprecated). Risk is low for local/embedded DB usage. Suppressed via `<NoWarn>NU1903</NoWarn>` in `JobTracking.Api.csproj` and `JobTracking.Api.Tests.csproj`. Track upstream for a real fix — watch `Microsoft.Data.Sqlite` / `SQLitePCLRaw.bundle_e_sqlite3` v3 line.
+
 ## Open / Deferred (for future sessions)
 
 - Scaffold the Blazor project and implement the data model

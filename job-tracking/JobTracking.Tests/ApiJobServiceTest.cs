@@ -148,6 +148,70 @@ public class ApiJobServiceTest
     }
 
     [Fact]
+    public async Task UpdateJobAsync_sends_patch_and_returns_updated_job()
+    {
+        var request = new UpdateJobRequest
+        {
+            JobName = "Renamed Job",
+            LeadDate = new DateTime(2026, 7, 1),
+            QuoteAmount = 7500m,
+        };
+
+        var updatedJob = new Job
+        {
+            Id = 1,
+            JobNumber = 1000,
+            Customer = new() { Name = "Thompson" },
+            JobName = "Renamed Job",
+        };
+
+        HttpRequestMessage? captured = null;
+        var handler = new MockHttpMessageHandler(requestMessage =>
+        {
+            captured = requestMessage;
+            return new HttpResponseMessage(HttpStatusCode.OK)
+            {
+                Content = JsonContent.Create(updatedJob, options: JsonOptions)
+            };
+        });
+
+        var client = new HttpClient(handler) { BaseAddress = new Uri("http://localhost:5271") };
+        var service = new ApiJobService(client);
+
+        var result = await service.UpdateJobAsync(1, request);
+
+        Assert.NotNull(captured);
+        Assert.Equal(HttpMethod.Patch, captured!.Method);
+        Assert.Equal("http://localhost:5271/api/jobs/1", captured.RequestUri!.ToString());
+
+        var body = await captured.Content.ReadFromJsonAsync<UpdateJobRequest>(JsonOptions) ?? new();
+        Assert.Equal("Renamed Job", body!.JobName);
+        Assert.Equal(7500m, body.QuoteAmount);
+
+        Assert.Equal("Renamed Job", result.JobName);
+    }
+
+    [Fact]
+    public async Task DeleteJobAsync_sends_delete()
+    {
+        HttpRequestMessage? captured = null;
+        var handler = new MockHttpMessageHandler(requestMessage =>
+        {
+            captured = requestMessage;
+            return new HttpResponseMessage(HttpStatusCode.OK);
+        });
+
+        var client = new HttpClient(handler) { BaseAddress = new Uri("http://localhost:5271") };
+        var service = new ApiJobService(client);
+
+        await service.DeleteJobAsync(42);
+
+        Assert.NotNull(captured);
+        Assert.Equal(HttpMethod.Delete, captured!.Method);
+        Assert.Equal("http://localhost:5271/api/jobs/42", captured.RequestUri!.ToString());
+    }
+
+    [Fact]
     public async Task GetCustomersAsync_returns_deserialized_customers()
     {
         var apiResponse = new[]

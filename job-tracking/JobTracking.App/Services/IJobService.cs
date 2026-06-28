@@ -7,5 +7,7 @@ public interface IJobService
     Task<List<Job>> GetJobsAsync();
     Task<Job> ToggleMilestoneAsync(int jobId, int milestoneId, bool isComplete);
     Task<Job> CreateJobAsync(CreateJobRequest dto);
+    Task<Job> UpdateJobAsync(int jobId, UpdateJobRequest dto);
+    Task DeleteJobAsync(int jobId);
     Task<List<Customer>> GetCustomersAsync();
 }

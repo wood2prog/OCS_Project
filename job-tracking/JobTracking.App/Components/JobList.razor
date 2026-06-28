@@ -5,16 +5,27 @@
         <button class="add-job-button" @onclick="() => OnAddJob.InvokeAsync()">+ Add Job</button>
     </div>
     <h3 class="job-list-header">Jobs</h3>
-    <div class="job-list-items">
+    <div class="job-list-items" @onclick="() => _openMenuJobId = null">
         @foreach (var job in Jobs)
         {
             <div class="job-row @(SelectedJob?.Id == job.Id ? "selected" : "")"
-                 @onclick="() => SelectJob(job)">
+                 @onclick="() => { _openMenuJobId = null; SelectJob(job); }"
+                 @onclick:stopPropagation>
                 <div class="job-row-info">
                     <span class="job-row-name">@job.JobName</span>
                     <span class="job-row-detail">#@job.JobNumber - @job.CustomerName</span>
                 </div>
                 <span class="status-badge status-@job.Status.Replace(" ", "-").ToLowerInvariant()">@job.Status</span>
+                <span class="job-row-actions" @onclick:stopPropagation>
+                    <button class="kebab-button" @onclick="() => ToggleMenu(job)" @onclick:stopPropagation>&#8942;</button>
+                    @if (_openMenuJobId == job.Id)
+                    {
+                        <div class="kebab-menu" @onclick:stopPropagation>
+                            <button class="kebab-edit" @onclick="() => HandleEdit(job)">Edit</button>
+                            <button class="kebab-delete" @onclick="() => HandleDelete(job)">Delete</button>
+                        </div>
+                    }
+                </span>
             </div>
         }
     </div>
@@ -58,7 +69,6 @@
     }
     .job-row {
         display: flex;
-        justify-content: space-between;
         align-items: center;
         padding: 0.75rem 1rem;
         cursor: pointer;
@@ -76,6 +86,8 @@
     .job-row-info {
         display: flex;
         flex-direction: column;
+        flex: 1;
+        min-width: 0;
     }
     .job-row-name {
         font-weight: 500;
@@ -92,6 +104,7 @@
         background-color: #eee;
         color: #555;
         white-space: nowrap;
+        margin-left: auto;
     }
     .status-new { background-color: #e8f5e9; color: #2e7d32; }
     .status-in-design { background-color: #fff3e0; color: #ef6c00; }
@@ -106,6 +119,15 @@
     .status-billing { background-color: #fff3e0; color: #ef6c00; }
     .status-paid { background-color: #e8f5e9; color: #2e7d32; }
     .status-closed { background-color: #f5f5f5; color: #757575; }
+    .job-row { position: relative; }
+    .job-row-actions { position: relative; display: flex; align-items: center; }
+    .kebab-button { background: none; border: none; cursor: pointer; font-size: 1.2rem; color: #777; padding: 0 0.25rem; line-height: 1; }
+    .kebab-button:hover { color: #333; }
+    .kebab-menu { position: absolute; right: 0; top: 100%; background: #fff; border: 1px solid #ddd; border-radius: 4px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); z-index: 1000; min-width: 100px; }
+    .kebab-menu button { display: block; width: 100%; padding: 0.5rem 1rem; border: none; background: none; text-align: left; cursor: pointer; font-size: 0.85rem; }
+    .kebab-menu button:hover { background-color: #f5f5f5; }
+    .kebab-edit { color: #1976d2; }
+    .kebab-delete { color: #d32f2f; }
 </style>
 
 @code {
@@ -121,8 +143,33 @@
     [Parameter]
     public EventCallback OnAddJob { get; set; }
 
+    [Parameter]
+    public EventCallback<Job> OnEditJob { get; set; }
+
+    [Parameter]
+    public EventCallback<Job> OnDeleteJob { get; set; }
+
+    private int? _openMenuJobId;
+
     private void SelectJob(Job job)
     {
         OnJobSelected.InvokeAsync(job);
+    }
+
+    private void ToggleMenu(Job job)
+    {
+        _openMenuJobId = _openMenuJobId == job.Id ? null : job.Id;
+    }
+
+    private async Task HandleEdit(Job job)
+    {
+        _openMenuJobId = null;
+        await OnEditJob.InvokeAsync(job);
+    }
+
+    private async Task HandleDelete(Job job)
+    {
+        _openMenuJobId = null;
+        await OnDeleteJob.InvokeAsync(job);
     }
 }

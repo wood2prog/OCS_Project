@@ -76,6 +76,17 @@ public class JobsController : ControllerBase
         return job;
     }
 
+    [HttpDelete("{id}")]
+    public async Task<ActionResult> Delete(int id)
+    {
+        var job = await _jobRepo.GetByIdAsync(id);
+        if (job is null)
+            return NotFound();
+
+        await _jobRepo.DeleteAsync(id);
+        return Ok();
+    }
+
     [HttpPost("{id}/documents")]
     public async Task<ActionResult<Document>> AddDocument(int id, [FromBody] CreateDocumentDto dto)
     {

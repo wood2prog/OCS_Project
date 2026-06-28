@@ -148,6 +148,61 @@ public class JobsControllerTest : IClassFixture<CustomWebApplicationFactory>
     }
 
     [Fact]
+    public async Task Delete_job_removes_job_and_returns_200()
+    {
+        var customer = await CreateCustomer("Co");
+        var job = await CreateJob(customer.Id, "To Delete");
+
+        var response = await _client.DeleteAsync($"/api/jobs/{job.Id}");
+
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+
+        var getResponse = await _client.GetAsync($"/api/jobs/{job.Id}");
+        Assert.Equal(HttpStatusCode.NotFound, getResponse.StatusCode);
+    }
+
+    [Fact]
+    public async Task Delete_nonexistent_job_returns_404()
+    {
+        var response = await _client.DeleteAsync("/api/jobs/99999");
+
+        Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
+    }
+
+    [Fact]
+    public async Task Patch_job_updates_fields_and_returns_updated_job()
+    {
+        var customer = await CreateCustomer("Co");
+        var job = await CreateJob(customer.Id, "Original Name");
+
+        var patchResponse = await _client.PatchAsJsonAsync($"/api/jobs/{job.Id}", new
+        {
+            JobName = "Updated Name",
+            LeadDate = "2026-07-01",
+            StartDate = "2026-07-15",
+            DeliveryDate = "2026-08-15",
+            QuoteAmount = 10000m
+        });
+
+        Assert.Equal(HttpStatusCode.OK, patchResponse.StatusCode);
+        var updated = await patchResponse.Content.ReadFromJsonAsync<Job>();
+
+        Assert.NotNull(updated);
+        Assert.Equal("Updated Name", updated!.JobName);
+        Assert.Equal(10000m, updated!.QuoteAmount);
+    }
+
+    [Fact]
+    public async Task Delete_job_cascade_removes_milestones()
+    {
+        var customer = await CreateCustomer("Co");
+        var job = await CreateJob(customer.Id, "Cascade Test");
+
+        var deleteResponse = await _client.DeleteAsync($"/api/jobs/{job.Id}");
+        Assert.Equal(HttpStatusCode.OK, deleteResponse.StatusCode);
+    }
+
+    [Fact]
     public async Task Closed_jobs_older_than_7_days_excluded_from_active()
     {
         var customer = await CreateCustomer("Co");

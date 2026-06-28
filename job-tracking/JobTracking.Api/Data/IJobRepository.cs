@@ -9,6 +9,7 @@ public interface IJobRepository
     Task<List<Job>> GetAllActiveAsync();
     Task<List<Job>> GetAllAsync();
     Task UpdateAsync(Job job);
+    Task DeleteAsync(int id);
     Task<ChangeOrder> CreateChangeOrderAsync(int jobId, string description, decimal? amount);
     Task<Document> AddDocumentAsync(int jobId, string bucket, string fileName, string storagePath, string? notes);
     Task<List<Document>> GetDocumentsAsync(int jobId);

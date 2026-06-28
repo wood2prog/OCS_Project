@@ -100,4 +100,87 @@ public class JobListTest : BunitContext
 
         Assert.True(invoked);
     }
+
+    [Fact]
+    public void Each_job_row_has_kebab_button()
+    {
+        var cut = Render<JobList>(p => p.Add(c => c.Jobs, SampleJobs()));
+        var kebabButtons = cut.FindAll(".kebab-button");
+        Assert.Equal(2, kebabButtons.Count);
+    }
+
+    [Fact]
+    public void Clicking_kebab_toggles_dropdown()
+    {
+        var cut = Render<JobList>(p => p.Add(c => c.Jobs, SampleJobs()));
+
+        var firstKebab = cut.FindAll(".kebab-button")[0];
+        firstKebab.Click();
+
+        var menu = cut.Find(".kebab-menu");
+        Assert.NotNull(menu);
+        Assert.Contains("Edit", menu.TextContent);
+        Assert.Contains("Delete", menu.TextContent);
+    }
+
+    [Fact]
+    public void Clicking_kebab_twice_closes_dropdown()
+    {
+        var cut = Render<JobList>(p => p.Add(c => c.Jobs, SampleJobs()));
+
+        cut.FindAll(".kebab-button")[0].Click();
+        cut.FindAll(".kebab-button")[0].Click();
+
+        Assert.Equal(0, cut.FindAll(".kebab-menu").Count);
+    }
+
+    [Fact]
+    public void Clicking_edit_in_kebab_fires_OnEditJob()
+    {
+        Job? capturedEdit = null;
+        var cut = Render<JobList>(p =>
+        {
+            p.Add(c => c.Jobs, SampleJobs());
+            p.Add(c => c.OnEditJob, EventCallback.Factory.Create<Job>(this, j => capturedEdit = j));
+        });
+
+        cut.FindAll(".kebab-button")[0].Click();
+        cut.Find(".kebab-edit").Click();
+
+        Assert.NotNull(capturedEdit);
+        Assert.Equal("Job A", capturedEdit!.JobName);
+    }
+
+    [Fact]
+    public void Clicking_delete_in_kebab_fires_OnDeleteJob()
+    {
+        Job? capturedDelete = null;
+        var cut = Render<JobList>(p =>
+        {
+            p.Add(c => c.Jobs, SampleJobs());
+            p.Add(c => c.OnDeleteJob, EventCallback.Factory.Create<Job>(this, j => capturedDelete = j));
+        });
+
+        cut.FindAll(".kebab-button")[1].Click();
+        cut.Find(".kebab-delete").Click();
+
+        Assert.NotNull(capturedDelete);
+        Assert.Equal("Job B", capturedDelete!.JobName);
+    }
+
+    [Fact]
+    public void Kebab_click_does_not_trigger_row_selection()
+    {
+        Job? selected = null;
+        var invoked = false;
+        var cut = Render<JobList>(p =>
+        {
+            p.Add(c => c.Jobs, SampleJobs());
+            p.Add(c => c.OnJobSelected, EventCallback.Factory.Create<Job>(this, j => { selected = j; invoked = true; }));
+        });
+
+        cut.FindAll(".kebab-button")[0].Click();
+
+        Assert.False(invoked);
+    }
 }

@@ -5,7 +5,9 @@
 
 <div class="three-column-layout">
     <div class="col-job-list">
-        <JobList Jobs="@_jobs" SelectedJob="@_selectedJob" OnJobSelected="@HandleJobSelected" OnAddJob="@HandleAddJob" />
+        <JobList Jobs="@_jobs" SelectedJob="@_selectedJob"
+                 OnJobSelected="@HandleJobSelected" OnAddJob="@HandleAddJob"
+                 OnEditJob="@HandleEditJob" OnDeleteJob="@HandleInitiateDelete" />
     </div>
     <div class="col-job-detail">
         <JobDetail Job="@_selectedJob" OnMilestoneToggled="@HandleMilestoneToggled" />
@@ -15,6 +17,25 @@
 @if (_showAddJobModal)
 {
     <AddJobModal Customers="@_customers" OnJobCreated="@HandleJobCreated" OnDismiss="@HandleDismiss" />
+}
+
+@if (_showEditJobModal && _editJob is not null)
+{
+    <EditJobModal Job="@_editJob" OnJobUpdated="@HandleJobUpdated" OnDismiss="@HandleEditDismiss" />
+}
+
+@if (_showDeleteConfirm && _deleteJob is not null)
+{
+    <div class="modal-backdrop">
+        <div class="modal-card confirmation-card" @onclick:stopPropagation>
+            <h3 class="modal-title">Delete Job</h3>
+            <p class="confirm-message">Are you sure you want to delete <strong>@_deleteJob.JobName</strong>? This action cannot be undone.</p>
+            <div class="modal-actions">
+                <button class="cancel-button" @onclick="HandleDeleteCancel" type="button">Cancel</button>
+                <button class="delete-button" @onclick="HandleDeleteConfirm" type="button">Delete</button>
+            </div>
+        </div>
+    </div>
 }
 
 <style>
@@ -32,12 +53,25 @@
         flex: 1;
         overflow-y: auto;
     }
+    .modal-backdrop { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.4); display: flex; align-items: center; justify-content: center; z-index: 1000; }
+    .modal-card { background: #fff; border-radius: 8px; padding: 1.5rem; width: 400px; max-width: 90vw; box-shadow: 0 4px 20px rgba(0,0,0,0.15); }
+    .confirmation-card { width: 360px; }
+    .modal-title { margin: 0 0 1rem 0; font-size: 1.2rem; color: #333; }
+    .confirm-message { color: #555; margin-bottom: 1.5rem; }
+    .modal-actions { display: flex; justify-content: flex-end; gap: 0.5rem; }
+    .cancel-button { padding: 0.5rem 1rem; background: #f5f5f5; border: 1px solid #ccc; border-radius: 4px; cursor: pointer; }
+    .delete-button { padding: 0.5rem 1rem; background: #d32f2f; color: #fff; border: none; border-radius: 4px; cursor: pointer; }
+    .delete-button:hover { background: #b71c1c; }
 </style>
 
 @code {
     private List<Job> _jobs = [];
     private Job? _selectedJob;
     private bool _showAddJobModal;
+    private bool _showEditJobModal;
+    private bool _showDeleteConfirm;
+    private Job? _editJob;
+    private Job? _deleteJob;
     private List<Customer> _customers = [];
 
     protected override async Task OnInitializedAsync()
@@ -79,5 +113,62 @@
     private void HandleDismiss()
     {
         _showAddJobModal = false;
+    }
+
+    private void HandleEditJob(Job job)
+    {
+        _editJob = job;
+        _showEditJobModal = true;
+    }
+
+    private async Task HandleJobUpdated(UpdateJobRequest request)
+    {
+        if (_editJob is null)
+            return;
+
+        var updated = await JobService.UpdateJobAsync(_editJob.Id, request);
+        _showEditJobModal = false;
+        _editJob = null;
+
+        var index = _jobs.FindIndex(j => j.Id == updated.Id);
+        if (index >= 0)
+            _jobs[index] = updated;
+
+        if (_selectedJob?.Id == updated.Id)
+            _selectedJob = updated;
+    }
+
+    private void HandleEditDismiss()
+    {
+        _showEditJobModal = false;
+        _editJob = null;
+    }
+
+    private void HandleInitiateDelete(Job job)
+    {
+        _deleteJob = job;
+        _showDeleteConfirm = true;
+    }
+
+    private async Task HandleDeleteConfirm()
+    {
+        if (_deleteJob is null)
+            return;
+
+        await JobService.DeleteJobAsync(_deleteJob.Id);
+
+        _jobs.RemoveAll(j => j.Id == _deleteJob.Id);
+
+        if (_selectedJob?.Id == _deleteJob.Id)
+            _selectedJob = null;
+
+        _showDeleteConfirm = false;
+        _deleteJob = null;
+    }
+
+    private void HandleDeleteCancel()
+    {
+        _showDeleteConfirm = false;
+        _deleteJob = null;
     }
 }

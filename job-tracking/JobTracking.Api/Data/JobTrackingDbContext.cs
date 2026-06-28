@@ -33,7 +33,7 @@ public class JobTrackingDbContext : DbContext
         modelBuilder.Entity<Milestone>(e =>
         {
             e.HasKey(m => m.Id);
-            e.HasOne(m => m.Job).WithMany(j => j.Milestones).HasForeignKey(m => m.JobId);
+            e.HasOne(m => m.Job).WithMany(j => j.Milestones).HasForeignKey(m => m.JobId).OnDelete(DeleteBehavior.Cascade);
             e.HasOne(m => m.ChangeOrder).WithMany(co => co.Milestones).HasForeignKey(m => m.ChangeOrderId).OnDelete(DeleteBehavior.NoAction);
             e.Property(m => m.Label).IsRequired();
         });
@@ -41,14 +41,14 @@ public class JobTrackingDbContext : DbContext
         modelBuilder.Entity<ChangeOrder>(e =>
         {
             e.HasKey(co => co.Id);
-            e.HasOne(co => co.Job).WithMany(j => j.ChangeOrders).HasForeignKey(co => co.JobId);
+            e.HasOne(co => co.Job).WithMany(j => j.ChangeOrders).HasForeignKey(co => co.JobId).OnDelete(DeleteBehavior.Cascade);
             e.Property(co => co.CreatedAt).HasDefaultValueSql("datetime('now')");
         });
 
         modelBuilder.Entity<Document>(e =>
         {
             e.HasKey(d => d.Id);
-            e.HasOne(d => d.Job).WithMany(j => j.Documents).HasForeignKey(d => d.JobId);
+            e.HasOne(d => d.Job).WithMany(j => j.Documents).HasForeignKey(d => d.JobId).OnDelete(DeleteBehavior.Cascade);
             e.Property(d => d.Bucket).IsRequired();
             e.Property(d => d.UploadedAt).HasDefaultValueSql("datetime('now')");
         });

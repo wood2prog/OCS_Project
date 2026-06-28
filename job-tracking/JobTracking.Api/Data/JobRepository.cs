@@ -151,4 +151,14 @@ public class JobRepository : IJobRepository
         _db.Jobs.Update(job);
         await _db.SaveChangesAsync();
     }
+
+    public async Task DeleteAsync(int id)
+    {
+        var job = await _db.Jobs.FindAsync(id);
+        if (job is not null)
+        {
+            _db.Jobs.Remove(job);
+            await _db.SaveChangesAsync();
+        }
+    }
 }

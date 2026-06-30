@@ -28,6 +28,10 @@ _Avoid_: Stage, status, step
 An unplanned revision to a job that occurs during production, triggering a sub-milestone group that cycles through redesign, requote, and reapprove before re-entering production.
 _Avoid_: Revision, modification, alteration
 
+**Customer**:
+A person or organization that orders cabinets. Each job is associated with exactly one customer. Customer records live in the Job Tracking module and can be managed independently.
+_Avoid_: Client, buyer, account
+
 **Load Check**:
 The final verification that all cabinets and parts are on the trailer before delivery, done against the printout lists.
 

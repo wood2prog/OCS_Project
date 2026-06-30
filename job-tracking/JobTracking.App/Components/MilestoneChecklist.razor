@@ -3,21 +3,35 @@
 
 <div class="job-card">
     <h2 class="job-name">@Job.JobName</h2>
-    <ul class="milestone-list">
+    <div class="stepper">
+        @{
+            var activeMilestone = Job.Milestones
+                .Where(m => m.CompletedAt == null)
+                .MinBy(m => m.Order);
+        }
         @foreach (var milestone in Job.Milestones)
         {
-            <li class="milestone-item @(milestone.CompletedAt != null ? "completed" : "")">
-                <label class="milestone-label">
-                    <input type="checkbox"
-                           class="milestone-checkbox"
-                           checked="@(milestone.CompletedAt != null)"
-                           @onchange="() => OnMilestoneToggled.InvokeAsync((Job.Id, milestone.Id, milestone.CompletedAt == null))" />
-                    <span class="milestone-order">@milestone.Order.</span>
-                    <span class="milestone-text">@milestone.Label</span>
-                </label>
-            </li>
+            var isCompleted = milestone.CompletedAt != null;
+            var isActive = !isCompleted && milestone == activeMilestone;
+            var stepClass = isCompleted ? "step-completed" : isActive ? "step-active" : "step-locked";
+
+            <div class="step-node @stepClass" @onclick="() => HandleClick(milestone, isActive)">
+                <div class="step-indicator">
+                    @if (isCompleted)
+                    {
+                        <span class="step-checkmark">&#10003;</span>
+                    }
+                    else
+                    {
+                        <span class="step-number">@milestone.Order</span>
+                    }
+                </div>
+                <div class="step-content">
+                    <span class="step-label">@milestone.Label</span>
+                </div>
+            </div>
         }
-    </ul>
+    </div>
 </div>
 
 <style>
@@ -31,42 +45,76 @@
     }
     .job-name {
         font-size: 1.25rem;
-        margin: 0 0 1rem 0;
+        margin: 0 0 1.5rem 0;
         color: #333;
     }
-    .milestone-list {
-        list-style: none;
-        padding: 0;
-        margin: 0;
+    .stepper {
+        display: flex;
+        flex-direction: column;
     }
-    .milestone-item {
-        padding: 0.4rem 0;
-        border-bottom: 1px solid #f0f0f0;
+    .step-node {
+        display: flex;
+        align-items: flex-start;
+        gap: 0.75rem;
+        padding: 0.5rem 0;
+        position: relative;
     }
-    .milestone-item:last-child {
-        border-bottom: none;
+    .step-node::after {
+        content: '';
+        position: absolute;
+        left: 0.95rem;
+        top: 2.5rem;
+        width: 2px;
+        height: calc(100% - 2.5rem);
+        background: #e0e0e0;
     }
-    .milestone-label {
+    .step-node:last-child::after {
+        display: none;
+    }
+    .step-indicator {
+        width: 2rem;
+        height: 2rem;
+        border-radius: 50%;
         display: flex;
         align-items: center;
-        gap: 0.5rem;
-        cursor: pointer;
+        justify-content: center;
+        flex-shrink: 0;
+        font-size: 0.85rem;
+        font-weight: 600;
     }
-    .milestone-checkbox {
-        width: 1.1rem;
-        height: 1.1rem;
-        cursor: pointer;
+    .step-content {
+        padding-top: 0.3rem;
     }
-    .milestone-order {
+    .step-label {
+        font-size: 0.95rem;
+    }
+    .step-completed .step-indicator {
+        background: #4caf50;
+        color: #fff;
+    }
+    .step-completed .step-label {
         color: #999;
-        min-width: 1.5rem;
     }
-    .milestone-text {
+    .step-active .step-indicator {
+        background: #2196f3;
+        color: #fff;
+    }
+    .step-active .step-label {
         color: #333;
+        font-weight: 600;
     }
-    .milestone-item.completed .milestone-text {
-        text-decoration: line-through;
+    .step-active {
+        cursor: pointer;
+    }
+    .step-locked .step-indicator {
+        background: #e0e0e0;
         color: #999;
+    }
+    .step-locked .step-label {
+        color: #bbb;
+    }
+    .step-locked {
+        cursor: default;
     }
 </style>
 
@@ -76,4 +124,10 @@
 
     [Parameter]
     public EventCallback<(int JobId, int MilestoneId, bool Complete)> OnMilestoneToggled { get; set; }
+
+    private void HandleClick(Milestone milestone, bool isActive)
+    {
+        if (isActive)
+            OnMilestoneToggled.InvokeAsync((Job.Id, milestone.Id, true));
+    }
 }

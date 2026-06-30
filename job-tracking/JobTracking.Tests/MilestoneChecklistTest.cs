@@ -41,8 +41,8 @@ public class MilestoneChecklistTest : BunitContext
     public void Renders_all_12_milestones_in_order()
     {
         var cut = Render<MilestoneChecklist>(p => p.Add(c => c.Job, SampleJob()));
-        var items = cut.FindAll(".milestone-item");
-        Assert.Equal(12, items.Count);
+        var nodes = cut.FindAll(".step-node");
+        Assert.Equal(12, nodes.Count);
 
         var expectedLabels = new[]
         {
@@ -52,23 +52,61 @@ public class MilestoneChecklistTest : BunitContext
             "Delivered", "Billed", "Paid", "Closed"
         };
 
-        for (int i = 0; i < items.Count; i++)
+        for (int i = 0; i < nodes.Count; i++)
         {
-            var text = items[i].QuerySelector(".milestone-text")!.TextContent.Trim();
-            Assert.Equal(expectedLabels[i], text);
+            var label = nodes[i].QuerySelector(".step-label")!.TextContent.Trim();
+            Assert.Equal(expectedLabels[i], label);
         }
     }
 
     [Fact]
-    public void All_milestones_start_unchecked()
+    public void All_steps_locked_when_none_complete()
     {
         var cut = Render<MilestoneChecklist>(p => p.Add(c => c.Job, SampleJob()));
-        var checkboxes = cut.FindAll(".milestone-checkbox");
-        Assert.All(checkboxes, cb => Assert.False(cb.HasAttribute("checked")));
+        var nodes = cut.FindAll(".step-node");
+
+        Assert.Contains("step-active", nodes[0].ClassName);
+        for (int i = 1; i < nodes.Count; i++)
+        {
+            Assert.Contains("step-locked", nodes[i].ClassName);
+        }
     }
 
     [Fact]
-    public void Clicking_milestone_invokes_OnMilestoneToggled_with_correct_args()
+    public void Active_step_advances_as_milestones_complete()
+    {
+        var job = SampleJob();
+        job.Milestones[0].CompletedAt = DateTime.UtcNow;
+        job.Milestones[1].CompletedAt = DateTime.UtcNow;
+        job.Milestones[2].CompletedAt = DateTime.UtcNow;
+
+        var cut = Render<MilestoneChecklist>(p => p.Add(c => c.Job, job));
+        var nodes = cut.FindAll(".step-node");
+
+        for (int i = 0; i < 3; i++)
+            Assert.Contains("step-completed", nodes[i].ClassName);
+
+        Assert.Contains("step-active", nodes[3].ClassName);
+
+        for (int i = 4; i < 12; i++)
+            Assert.Contains("step-locked", nodes[i].ClassName);
+    }
+
+    [Fact]
+    public void All_steps_completed_when_all_done()
+    {
+        var job = SampleJob();
+        foreach (var m in job.Milestones)
+            m.CompletedAt = DateTime.UtcNow;
+
+        var cut = Render<MilestoneChecklist>(p => p.Add(c => c.Job, job));
+        var nodes = cut.FindAll(".step-node");
+
+        Assert.All(nodes, n => Assert.Contains("step-completed", n.ClassName));
+    }
+
+    [Fact]
+    public void Clicking_active_step_fires_callback_with_Complete_true()
     {
         var job = SampleJob();
         (int JobId, int MilestoneId, bool Complete)? captured = null;
@@ -78,8 +116,7 @@ public class MilestoneChecklistTest : BunitContext
             p.Add(c => c.OnMilestoneToggled, EventCallback.Factory.Create<(int, int, bool)>(this, args => captured = args));
         });
 
-        var firstCheckbox = cut.Find(".milestone-checkbox");
-        firstCheckbox.Change(true);
+        cut.Find(".step-active").Click();
 
         Assert.NotNull(captured);
         Assert.Equal(job.Id, captured.Value.JobId);
@@ -88,11 +125,9 @@ public class MilestoneChecklistTest : BunitContext
     }
 
     [Fact]
-    public void Clicking_checked_milestone_invokes_with_Complete_false()
+    public void Clicking_locked_step_does_not_fire_callback()
     {
         var job = SampleJob();
-        job.Milestones[0].CompletedAt = DateTime.UtcNow;
-
         (int JobId, int MilestoneId, bool Complete)? captured = null;
         var cut = Render<MilestoneChecklist>(p =>
         {
@@ -100,40 +135,9 @@ public class MilestoneChecklistTest : BunitContext
             p.Add(c => c.OnMilestoneToggled, EventCallback.Factory.Create<(int, int, bool)>(this, args => captured = args));
         });
 
-        var firstCheckbox = cut.Find(".milestone-checkbox");
-        firstCheckbox.Change(false);
+        var lockedStep = cut.FindAll(".step-locked")[0];
+        lockedStep.Click();
 
-        Assert.NotNull(captured);
-        Assert.False(captured.Value.Complete);
-    }
-
-    [Fact]
-    public void Completed_milestone_has_strikethrough_class()
-    {
-        var job = SampleJob();
-        job.Milestones[0].CompletedAt = DateTime.UtcNow;
-
-        var cut = Render<MilestoneChecklist>(p => p.Add(c => c.Job, job));
-
-        var firstItem = cut.Find(".milestone-item");
-        Assert.Contains("completed", firstItem.ClassName);
-    }
-
-    [Fact]
-    public void Toggling_one_milestone_only_fires_callback_for_that_milestone()
-    {
-        var job = SampleJob();
-        var calls = new List<(int JobId, int MilestoneId, bool Complete)>();
-        var cut = Render<MilestoneChecklist>(p =>
-        {
-            p.Add(c => c.Job, job);
-            p.Add(c => c.OnMilestoneToggled, EventCallback.Factory.Create<(int, int, bool)>(this, args => calls.Add(args)));
-        });
-
-        var checkboxes = cut.FindAll(".milestone-checkbox");
-        checkboxes[0].Change(true);
-
-        Assert.Single(calls);
-        Assert.Equal(job.Milestones[0].Id, calls[0].MilestoneId);
+        Assert.Null(captured);
     }
 }

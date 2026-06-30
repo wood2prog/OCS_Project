@@ -1,3 +1,5 @@
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace JobTracking.Api.Models;
 
 public class Customer
@@ -7,4 +9,7 @@ public class Customer
     public string? Email { get; set; }
     public string? Phone { get; set; }
     public string? Notes { get; set; }
+
+    [NotMapped]
+    public int JobCount { get; set; }
 }

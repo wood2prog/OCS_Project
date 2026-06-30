@@ -1,15 +1,9 @@
-using System.Text.Json.Serialization;
-
 namespace JobTracking.App.Models;
 
-public class Customer
+public class CreateCustomerRequest
 {
-    public int Id { get; set; }
     public string Name { get; set; } = string.Empty;
     public string? Email { get; set; }
     public string? Phone { get; set; }
     public string? Notes { get; set; }
-
-    [JsonPropertyName("jobCount")]
-    public int JobCount { get; set; }
 }

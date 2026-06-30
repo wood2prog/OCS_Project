@@ -71,7 +71,7 @@ public class MilestoneChecklistTest : BunitContext
     public void Clicking_milestone_invokes_OnMilestoneToggled_with_correct_args()
     {
         var job = SampleJob();
-        (int JobId, int MilestoneId, bool IsComplete)? captured = null;
+        (int JobId, int MilestoneId, bool Complete)? captured = null;
         var cut = Render<MilestoneChecklist>(p =>
         {
             p.Add(c => c.Job, job);
@@ -84,16 +84,16 @@ public class MilestoneChecklistTest : BunitContext
         Assert.NotNull(captured);
         Assert.Equal(job.Id, captured.Value.JobId);
         Assert.Equal(job.Milestones[0].Id, captured.Value.MilestoneId);
-        Assert.True(captured.Value.IsComplete);
+        Assert.True(captured.Value.Complete);
     }
 
     [Fact]
-    public void Clicking_checked_milestone_invokes_with_IsComplete_false()
+    public void Clicking_checked_milestone_invokes_with_Complete_false()
     {
         var job = SampleJob();
-        job.Milestones[0].IsComplete = true;
+        job.Milestones[0].CompletedAt = DateTime.UtcNow;
 
-        (int JobId, int MilestoneId, bool IsComplete)? captured = null;
+        (int JobId, int MilestoneId, bool Complete)? captured = null;
         var cut = Render<MilestoneChecklist>(p =>
         {
             p.Add(c => c.Job, job);
@@ -104,14 +104,14 @@ public class MilestoneChecklistTest : BunitContext
         firstCheckbox.Change(false);
 
         Assert.NotNull(captured);
-        Assert.False(captured.Value.IsComplete);
+        Assert.False(captured.Value.Complete);
     }
 
     [Fact]
     public void Completed_milestone_has_strikethrough_class()
     {
         var job = SampleJob();
-        job.Milestones[0].IsComplete = true;
+        job.Milestones[0].CompletedAt = DateTime.UtcNow;
 
         var cut = Render<MilestoneChecklist>(p => p.Add(c => c.Job, job));
 
@@ -123,7 +123,7 @@ public class MilestoneChecklistTest : BunitContext
     public void Toggling_one_milestone_only_fires_callback_for_that_milestone()
     {
         var job = SampleJob();
-        var calls = new List<(int JobId, int MilestoneId, bool IsComplete)>();
+        var calls = new List<(int JobId, int MilestoneId, bool Complete)>();
         var cut = Render<MilestoneChecklist>(p =>
         {
             p.Add(c => c.Job, job);

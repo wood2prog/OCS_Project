@@ -34,7 +34,7 @@ public class JobsControllerTest : IClassFixture<CustomWebApplicationFactory>
         Assert.Equal("Kitchen Remodel", job.JobName);
         Assert.True(job.JobNumber >= 1000);
         Assert.Equal(12, job.Milestones.Count);
-        Assert.All(job.Milestones, m => Assert.False(m.IsComplete));
+        Assert.All(job.Milestones, m => Assert.Null(m.CompletedAt));
         Assert.Equal("New", job.Status);
     }
 
@@ -78,7 +78,7 @@ public class JobsControllerTest : IClassFixture<CustomWebApplicationFactory>
     }
 
     [Fact]
-    public async Task Toggle_milestone_updates_status()
+    public async Task Update_milestone_sets_CompletedAt_when_complete_true()
     {
         var customer = await CreateCustomer("Co");
         var job = await CreateJob(customer.Id, "Kitchen");
@@ -86,15 +86,35 @@ public class JobsControllerTest : IClassFixture<CustomWebApplicationFactory>
         var ms1 = job.Milestones.First(m => m.Order == 1);
         var response = await _client.PatchAsJsonAsync(
             $"/api/jobs/{job.Id}/milestones/{ms1.Id}",
-            new { IsComplete = true, CompletedBy = "Alice" });
+            new { complete = true });
         var updated = await response.Content.ReadFromJsonAsync<Job>();
 
         Assert.NotNull(updated);
         var m1 = updated.Milestones.First(m => m.Order == 1);
-        Assert.True(m1.IsComplete);
-        Assert.Equal("Alice", m1.CompletedBy);
-        Assert.NotNull(m1.CompletedDate);
+        Assert.NotNull(m1.CompletedAt);
         Assert.Equal("In Design", updated.Status);
+    }
+
+    [Fact]
+    public async Task Update_milestone_clears_CompletedAt_when_complete_false()
+    {
+        var customer = await CreateCustomer("Co");
+        var job = await CreateJob(customer.Id, "Kitchen");
+
+        var ms1 = job.Milestones.First(m => m.Order == 1);
+        await _client.PatchAsJsonAsync(
+            $"/api/jobs/{job.Id}/milestones/{ms1.Id}",
+            new { complete = true });
+
+        var response = await _client.PatchAsJsonAsync(
+            $"/api/jobs/{job.Id}/milestones/{ms1.Id}",
+            new { complete = false });
+        var updated = await response.Content.ReadFromJsonAsync<Job>();
+
+        Assert.NotNull(updated);
+        var m1 = updated.Milestones.First(m => m.Order == 1);
+        Assert.Null(m1.CompletedAt);
+        Assert.Equal("New", updated.Status);
     }
 
     [Fact]
@@ -213,7 +233,7 @@ public class JobsControllerTest : IClassFixture<CustomWebApplicationFactory>
         {
             await _client.PatchAsJsonAsync(
                 $"/api/jobs/{job.Id}/milestones/{ms.Id}",
-                new { IsComplete = true, CompletedBy = "System" });
+                new { complete = true });
         }
 
         // Verify it's Closed

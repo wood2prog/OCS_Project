@@ -120,7 +120,7 @@ public class JobsController : ControllerBase
     }
 
     [HttpPatch("{id}/milestones/{milestoneId}")]
-    public async Task<ActionResult<Job>> ToggleMilestone(int id, int milestoneId, [FromBody] MilestoneToggleDto dto)
+    public async Task<ActionResult<Job>> UpdateMilestone(int id, int milestoneId, [FromBody] MilestoneUpdateDto dto)
     {
         var job = await _jobRepo.GetByIdAsync(id);
         if (job is null)
@@ -130,9 +130,7 @@ public class JobsController : ControllerBase
         if (milestone is null)
             return NotFound("Milestone not found");
 
-        milestone.IsComplete = dto.IsComplete;
-        milestone.CompletedBy = dto.CompletedBy;
-        milestone.CompletedDate = dto.IsComplete ? DateTime.UtcNow : null;
+        milestone.CompletedAt = dto.Complete ? DateTime.UtcNow : null;
 
         await _jobRepo.UpdateAsync(job);
         return job;
@@ -148,10 +146,9 @@ public record JobUpdateDto
     public decimal? QuoteAmount { get; init; }
 }
 
-public record MilestoneToggleDto
+public record MilestoneUpdateDto
 {
-    public bool IsComplete { get; init; }
-    public string? CompletedBy { get; init; }
+    public bool Complete { get; init; }
 }
 
 public record CreateChangeOrderDto

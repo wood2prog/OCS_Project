@@ -16,7 +16,7 @@ public class JobStatusTest
     public void Status_is_In_Design_when_milestone_1_completed()
     {
         var job = new Job();
-        job.Milestones.Add(new Milestone { Order = 1, Label = "Designed", IsComplete = true });
+        job.Milestones.Add(new Milestone { Order = 1, Label = "Designed", CompletedAt = DateTime.UtcNow });
 
         Assert.Equal("In Design", job.Status);
     }
@@ -25,8 +25,8 @@ public class JobStatusTest
     public void Status_is_Awaiting_Approval_when_milestones_1_and_2_completed()
     {
         var job = new Job();
-        job.Milestones.Add(new Milestone { Order = 1, Label = "Designed", IsComplete = true });
-        job.Milestones.Add(new Milestone { Order = 2, Label = "Sent for approval", IsComplete = true });
+        job.Milestones.Add(new Milestone { Order = 1, Label = "Designed", CompletedAt = DateTime.UtcNow });
+        job.Milestones.Add(new Milestone { Order = 2, Label = "Sent for approval", CompletedAt = DateTime.UtcNow });
 
         Assert.Equal("Awaiting Approval", job.Status);
     }
@@ -35,9 +35,9 @@ public class JobStatusTest
     public void Status_uses_highest_completed_milestone()
     {
         var job = new Job();
-        job.Milestones.Add(new Milestone { Order = 1, Label = "Designed", IsComplete = true });
+        job.Milestones.Add(new Milestone { Order = 1, Label = "Designed", CompletedAt = DateTime.UtcNow });
         job.Milestones.Add(new Milestone { Order = 2, Label = "Sent for approval" });
-        job.Milestones.Add(new Milestone { Order = 3, Label = "Approved to build", IsComplete = true });
+        job.Milestones.Add(new Milestone { Order = 3, Label = "Approved to build", CompletedAt = DateTime.UtcNow });
 
         Assert.Equal("Approved", job.Status);
     }
@@ -48,7 +48,7 @@ public class JobStatusTest
         var job = new Job();
         for (int i = 1; i <= 12; i++)
         {
-            job.Milestones.Add(new Milestone { Order = i, Label = $"M{i}", IsComplete = true });
+            job.Milestones.Add(new Milestone { Order = i, Label = $"M{i}", CompletedAt = DateTime.UtcNow });
         }
 
         Assert.Equal("Closed", job.Status);
@@ -64,7 +64,7 @@ public class JobStatusTest
             Customer = new Customer { Name = "Test Corp" },
             JobName = "Test Job"
         };
-        job.Milestones.Add(new Milestone { Id = 1, JobId = 42, Order = 1, Label = "Designed", IsComplete = true });
+        job.Milestones.Add(new Milestone { Id = 1, JobId = 42, Order = 1, Label = "Designed", CompletedAt = DateTime.UtcNow });
 
         Assert.Equal("In Design", job.Status);
     }

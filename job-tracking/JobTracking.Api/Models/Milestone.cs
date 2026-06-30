@@ -9,7 +9,6 @@ public class Milestone
     public ChangeOrder? ChangeOrder { get; set; }
     public int Order { get; set; }
     public string Label { get; set; } = string.Empty;
-    public bool IsComplete { get; set; }
     public string? CompletedBy { get; set; }
-    public DateTime? CompletedDate { get; set; }
+    public DateTime? CompletedAt { get; set; }
 }

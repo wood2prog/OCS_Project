@@ -32,5 +32,5 @@ else
     public Job? Job { get; set; }
 
     [Parameter]
-    public EventCallback<(int JobId, int MilestoneId, bool IsComplete)> OnMilestoneToggled { get; set; }
+    public EventCallback<(int JobId, int MilestoneId, bool Complete)> OnMilestoneToggled { get; set; }
 }

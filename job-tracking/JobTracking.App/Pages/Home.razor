@@ -79,9 +79,9 @@
         _jobs = await JobService.GetJobsAsync();
     }
 
-    private async Task HandleMilestoneToggled((int JobId, int MilestoneId, bool IsComplete) args)
+    private async Task HandleMilestoneToggled((int JobId, int MilestoneId, bool Complete) args)
     {
-        var updated = await JobService.ToggleMilestoneAsync(args.JobId, args.MilestoneId, args.IsComplete);
+        var updated = await JobService.UpdateMilestoneAsync(args.JobId, args.MilestoneId, args.Complete);
 
         var index = _jobs.FindIndex(j => j.Id == args.JobId);
         if (index >= 0)

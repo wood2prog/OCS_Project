@@ -6,12 +6,12 @@
     <ul class="milestone-list">
         @foreach (var milestone in Job.Milestones)
         {
-            <li class="milestone-item @(milestone.IsComplete ? "completed" : "")">
+            <li class="milestone-item @(milestone.CompletedAt != null ? "completed" : "")">
                 <label class="milestone-label">
                     <input type="checkbox"
                            class="milestone-checkbox"
-                           checked="@milestone.IsComplete"
-                           @onchange="() => OnMilestoneToggled.InvokeAsync((Job.Id, milestone.Id, !milestone.IsComplete))" />
+                           checked="@(milestone.CompletedAt != null)"
+                           @onchange="() => OnMilestoneToggled.InvokeAsync((Job.Id, milestone.Id, milestone.CompletedAt == null))" />
                     <span class="milestone-order">@milestone.Order.</span>
                     <span class="milestone-text">@milestone.Label</span>
                 </label>
@@ -75,5 +75,5 @@
     public Job Job { get; set; } = null!;
 
     [Parameter]
-    public EventCallback<(int JobId, int MilestoneId, bool IsComplete)> OnMilestoneToggled { get; set; }
+    public EventCallback<(int JobId, int MilestoneId, bool Complete)> OnMilestoneToggled { get; set; }
 }

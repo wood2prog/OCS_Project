@@ -79,9 +79,7 @@ public static class DataSeeder
             {
                 Order = order,
                 Label = label,
-                IsComplete = order <= completeUpTo,
-                CompletedBy = order <= completeUpTo ? "seed" : null,
-                CompletedDate = order <= completeUpTo ? DateTime.UtcNow : null,
+                CompletedAt = order <= completeUpTo ? DateTime.UtcNow : null,
             });
         }
         return milestones;

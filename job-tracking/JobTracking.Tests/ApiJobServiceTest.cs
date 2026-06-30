@@ -28,9 +28,9 @@ public class ApiJobServiceTest
                 JobName = "Thompson Kitchen Remodel",
                 Milestones =
                 [
-                    new() { Id = 1, JobId = 1, Order = 1, Label = "Designed", IsComplete = true },
-                    new() { Id = 2, JobId = 1, Order = 2, Label = "Sent for approval", IsComplete = true },
-                    new() { Id = 3, JobId = 1, Order = 3, Label = "Approved to build", IsComplete = true },
+                    new() { Id = 1, JobId = 1, Order = 1, Label = "Designed", CompletedAt = DateTime.UtcNow },
+                    new() { Id = 2, JobId = 1, Order = 2, Label = "Sent for approval", CompletedAt = DateTime.UtcNow },
+                    new() { Id = 3, JobId = 1, Order = 3, Label = "Approved to build", CompletedAt = DateTime.UtcNow },
                 ]
             }
         };
@@ -52,11 +52,11 @@ public class ApiJobServiceTest
         Assert.Equal("Thompson", job.CustomerName);
         Assert.Equal("Thompson Kitchen Remodel", job.JobName);
         Assert.Equal(3, job.Milestones.Count);
-        Assert.True(job.Milestones[0].IsComplete);
+        Assert.NotNull(job.Milestones[0].CompletedAt);
     }
 
     [Fact]
-    public async Task ToggleMilestoneAsync_calls_patch_and_returns_updated_job()
+    public async Task UpdateMilestoneAsync_calls_patch_and_returns_updated_job()
     {
         var updatedJob = new Job
         {
@@ -66,8 +66,8 @@ public class ApiJobServiceTest
             JobName = "Thompson Kitchen Remodel",
             Milestones =
             [
-                new() { Id = 1, JobId = 1, Order = 1, Label = "Designed", IsComplete = true },
-                new() { Id = 2, JobId = 1, Order = 2, Label = "Sent for approval", IsComplete = true },
+                new() { Id = 1, JobId = 1, Order = 1, Label = "Designed", CompletedAt = DateTime.UtcNow },
+                new() { Id = 2, JobId = 1, Order = 2, Label = "Sent for approval", CompletedAt = DateTime.UtcNow },
             ]
         };
 
@@ -84,13 +84,13 @@ public class ApiJobServiceTest
         var client = new HttpClient(handler) { BaseAddress = new Uri("http://localhost:5271") };
         var service = new ApiJobService(client);
 
-        var result = await service.ToggleMilestoneAsync(1, 1, true);
+        var result = await service.UpdateMilestoneAsync(1, 1, true);
 
         Assert.NotNull(captured);
         Assert.Equal(HttpMethod.Patch, captured!.Method);
         Assert.Equal("http://localhost:5271/api/jobs/1/milestones/1", captured.RequestUri!.ToString());
         Assert.Equal(1, result.Id);
-        Assert.True(result.Milestones[0].IsComplete);
+        Assert.NotNull(result.Milestones[0].CompletedAt);
     }
 
     [Fact]

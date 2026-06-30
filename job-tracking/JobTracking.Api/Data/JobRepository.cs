@@ -40,7 +40,7 @@ public class JobRepository : IJobRepository
             {
                 Order = order,
                 Label = label,
-                IsComplete = false,
+                CompletedAt = null,
             });
         }
 
@@ -71,9 +71,9 @@ public class JobRepository : IJobRepository
             .Where(j =>
             {
                 var highest = j.Milestones
-                    .Where(m => m.IsComplete && m.ChangeOrderId == null)
+                    .Where(m => m.CompletedAt != null && m.ChangeOrderId == null)
                     .MaxBy(m => m.Order);
-                if (highest?.Order == 12 && highest.CompletedDate <= sevenDaysAgo)
+                if (highest?.Order == 12 && highest.CompletedAt <= sevenDaysAgo)
                     return false;
                 return true;
             })
@@ -111,7 +111,7 @@ public class JobRepository : IJobRepository
                 ChangeOrderId = co.Id,
                 Order = order,
                 Label = label,
-                IsComplete = false,
+                CompletedAt = null,
             });
         }
 

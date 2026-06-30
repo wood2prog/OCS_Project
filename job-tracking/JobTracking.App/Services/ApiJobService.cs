@@ -23,11 +23,11 @@ public class ApiJobService : IJobService
         return jobs ?? [];
     }
 
-    public async Task<Job> ToggleMilestoneAsync(int jobId, int milestoneId, bool isComplete)
+    public async Task<Job> UpdateMilestoneAsync(int jobId, int milestoneId, bool complete)
     {
         var response = await _http.PatchAsJsonAsync(
             $"/api/jobs/{jobId}/milestones/{milestoneId}",
-            new { isComplete });
+            new { complete });
 
         response.EnsureSuccessStatusCode();
 

@@ -145,4 +145,4 @@ The existing `POST /api/jobs` endpoint and `GET /api/customers` endpoint already
 
 ## Further Notes
 
-This PRD was not published to GitHub Issues because `gh` CLI is not available in this environment. The PRD is filed in the repo as `docs/prd-005-add-job-modal.md`.
+Published as `docs/prd-005-add-job-modal.md`.

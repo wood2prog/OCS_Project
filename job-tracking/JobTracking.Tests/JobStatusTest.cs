@@ -55,6 +55,15 @@ public class JobStatusTest
     }
 
     [Fact]
+    public void Status_is_New_when_only_change_order_milestones_completed()
+    {
+        var job = new Job();
+        job.Milestones.Add(new Milestone { Order = 1, Label = "Designed", CompletedAt = DateTime.UtcNow, ChangeOrderId = 99 });
+
+        Assert.Equal("New", job.Status);
+    }
+
+    [Fact]
     public void Status_is_unaffected_by_JobNumber_and_CustomerName()
     {
         var job = new Job

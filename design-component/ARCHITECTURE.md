@@ -1,5 +1,7 @@
 # Design Component — Architecture
 
+> **Status note (PRD-010)**: The JSON-only data flow between Data Ingestion and the Design Component (shown in the module diagram below) was superseded in Session 4 in favour of a Python-based Construction Script model. The diagram has not been rewritten — it reflects the earlier architecture. See `docs/conversation-record.md` (Session 4) for the current paradigm.
+
 ## Entity Hierarchy
 
 ```

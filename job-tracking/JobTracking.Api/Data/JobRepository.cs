@@ -7,22 +7,6 @@ public class JobRepository : IJobRepository
 {
     private readonly JobTrackingDbContext _db;
 
-    private static readonly (int Order, string Label)[] DefaultMilestones =
-    [
-        (1, "Designed"),
-        (2, "Sent for approval"),
-        (3, "Approved to build"),
-        (4, "Production started"),
-        (5, "Components machined and assembled"),
-        (6, "Components finished"),
-        (7, "Final assembly done"),
-        (8, "Loaded"),
-        (9, "Delivered"),
-        (10, "Billed"),
-        (11, "Paid"),
-        (12, "Closed"),
-    ];
-
     public JobRepository(JobTrackingDbContext db)
     {
         _db = db;
@@ -34,7 +18,7 @@ public class JobRepository : IJobRepository
         job.JobNumber = maxNumber + 1;
         job.CreatedAt = DateTime.UtcNow;
 
-        foreach (var (order, label) in DefaultMilestones)
+        foreach (var (order, label) in DefaultMilestones.All)
         {
             job.Milestones.Add(new Milestone
             {
@@ -103,7 +87,7 @@ public class JobRepository : IJobRepository
         _db.ChangeOrders.Add(co);
         await _db.SaveChangesAsync();
 
-        foreach (var (order, label) in DefaultMilestones)
+        foreach (var (order, label) in DefaultMilestones.All)
         {
             _db.Milestones.Add(new Milestone
             {

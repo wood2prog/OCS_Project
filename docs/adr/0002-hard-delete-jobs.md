@@ -1,3 +1,5 @@
-# Hard delete jobs
+# ADR 0002: Hard delete jobs
+
+**Status: Accepted**
 
 The original design in PRD-003 established a "never deleted" invariant for jobs, relying on the 12-milestone "Closed" state for completion. PRD-006 departs from this by implementing hard DELETE with EF Core cascade delete on Job→Milestone, Job→ChangeOrder, and Job→Document relationships. This is justified by the practical need to clean up test entries, duplicates, and mistaken creations — cases where closing a job through 12 milestones imposes unreasonable overhead for error correction. The "Closed" milestone remains the standard way to complete a legitimate job; delete is reserved for error correction only.

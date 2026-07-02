@@ -78,8 +78,8 @@ The job data comes from an in-memory mock service (`IJobService` interface with 
   - `JobDetail.razor` — new component: empty state or delegates to `MilestoneChecklist`
   - `MilestoneChecklist.razor` — unchanged; still takes a `Job` parameter
 - **No job creation UI**: The mock service returns hardcoded jobs only. Creation comes with a real backend.
-- **No CSS framework**: Continue with functional CSS in component-scoped stylesheets, matching PRD-001's approach. No Bootstrap, Tailwind, or other framework.
 - **Existing ADRs respected**: Milestone checklist model (ADR 0001) is unchanged. The three-column layout is additive — it works with any number of milestones.
+- **CSS framework**: Bootstrap 5.3 is used via `wwwroot/lib/bootstrap/`. No Tailwind or other frameworks.
 
 ## Testing Decisions
 
@@ -107,4 +107,4 @@ The job data comes from an in-memory mock service (`IJobService` interface with 
 
 ## Further Notes
 
-This PRD was not published to GitHub Issues because `gh` CLI is not available in this environment. The PRD is filed in the repo as `docs/prd-002-job-tracking-three-column-layout.md` and should be reviewed before implementation begins.
+Published as `docs/prd-002-job-tracking-three-column-layout.md`.

@@ -18,7 +18,7 @@ public class Job
         get
         {
             var lastCompleted = Milestones
-                .Where(m => m.CompletedAt != null)
+                .Where(m => m.CompletedAt != null && m.ChangeOrderId == null)
                 .MaxBy(m => m.Order);
 
             return lastCompleted?.Order switch

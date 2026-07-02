@@ -55,4 +55,4 @@ If the user can look at this page and say "yes, this is how I want to track job 
 
 ## Further Notes
 
-This PRD has not been published to GitHub Issues because `gh` CLI is not available in this environment. The PRD is filed in the repo as `docs/prd-001-job-tracking-minimal-slice.md` and should be reviewed before implementation begins.
+Published as `docs/prd-001-job-tracking-minimal-slice.md`.

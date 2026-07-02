@@ -3,6 +3,12 @@
 ##
 ## Get latest from `dotnet new gitignore`
 
+# SQLite database files
+*.db
+
+# Vendored client libraries (restored by package manager)
+job-tracking/JobTracking.App/wwwroot/lib/
+
 # dotenv files
 .env
 

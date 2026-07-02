@@ -2,7 +2,7 @@
 
 ## Repo type
 
-Documentation / knowledge capture for a cabinet shop automation project. **No code, no build system, no test framework, no package manifests.**
+Documentation / knowledge capture with working code under `job-tracking/` — a .NET 10 Blazor/Web API solution with bUnit/xUnit tests.
 
 ## First reads
 
@@ -17,7 +17,7 @@ Documentation / knowledge capture for a cabinet shop automation project. **No co
 
 - **ADRs** go under `docs/adr/` (create lazily). No opencode.json exists.
 - **Vocabulary** is defined in `CONTEXT.md` and must be respected when writing any content.
-- **No automated checks** — no lint, test, typecheck, or format commands exist. Nothing to run.
+- **No automated checks** — no lint, typecheck, or format commands exist. Nothing to run.
 
 ## Architecture
 

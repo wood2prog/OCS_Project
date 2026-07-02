@@ -93,8 +93,7 @@ The API exposes RESTful endpoints for the full data model defined in Sessions 5 
 | Order | int | Position in milestone list |
 | Label | string, required | e.g., "Designed", "Approved to build" |
 | IsComplete | bool | |
-| CompletedBy | string? | Will be wired to auth later |
-| CompletedDate | DateTime? | UTC |
+| CompletedAt | DateTime? | UTC |
 
 **ChangeOrders**
 | Column | Type | Notes |
@@ -121,11 +120,11 @@ The API exposes RESTful endpoints for the full data model defined in Sessions 5 
 
 - **Status computation**: Derived from the highest-completed main milestone (where `ChangeOrderId IS NULL`). Not stored in the database. Same logic as the existing `Job.Status` computed property.
 - **JobNumber auto-increment**: EF Core `ValueGeneratedOnAdd()` with starting value 1000. Displayed as `"{JobNumber}-{JobName}"`.
-- **Closed job visibility**: Application-layer filter — jobs where the highest-completed milestone is "Closed" (Order = 12) and `CompletedDate` is more than 7 days ago are excluded from the default list. No schema change. An archive endpoint returns all jobs including closed ones for the future archive page.
+- **Closed job visibility**: Application-layer filter — jobs where the highest-completed milestone is "Closed" (Order = 12) and `CompletedAt` is more than 7 days ago are excluded from the default list. No schema change. An archive endpoint returns all jobs including closed ones for the future archive page.
 - **Change order sub-milestones**: A `ChangeOrderId` FK on `Milestones` groups sub-milestones under their parent change order. They are excluded from the main status computation. When rendered, they appear as a grouped sub-list within the job detail view.
 - **Document storage**: Files are written to a configured upload directory on disk (e.g., `uploads/{jobId}/{bucket}/`). The `Documents` table stores only metadata and the relative path. Blobs are served via a static file or dedicated download endpoint.
 - **UTC convention**: All `DateTime` columns store UTC. The API returns ISO 8601 dates with `Z` suffix. The Blazor frontend converts to local time using `TimeZoneInfo` or JavaScript interop.
-- **No deletion**: Customers and Jobs are never deleted from the database. No cascade delete behaviors on FKs.
+- **No deletion** (superseded by ADR-0002): The original invariant stated that Customers and Jobs are never deleted. ADR-0002 (hard-delete) overturns this for jobs — hard DELETE is implemented for error correction (test entries, duplicates, mistaken creations). Customers remain undeleted; the `409 Conflict` guard in the DELETE endpoint prevents deletion of customers with active jobs.
 
 ### API Endpoints
 
@@ -139,7 +138,7 @@ The API exposes RESTful endpoints for the full data model defined in Sessions 5 
 | GET | /api/jobs/{id} | Get job with milestones and change orders |
 | POST | /api/jobs | Create job (sets up 12 default milestones) |
 | PATCH | /api/jobs/{id} | Update job fields |
-| PATCH | /api/jobs/{id}/milestones/{milestoneId} | Toggle milestone completion (sets IsComplete, CompletedBy, CompletedDate) |
+| PATCH | /api/jobs/{id}/milestones/{milestoneId} | Set milestone completion (sets CompletedAt) |
 | POST | /api/jobs/{id}/changeorders | Create change order (creates sub-milestones) |
 | GET | /api/jobs/{id}/changeorders | List change orders for job |
 | GET | /api/jobs/{id}/documents | List documents for job |
@@ -178,4 +177,4 @@ The API exposes RESTful endpoints for the full data model defined in Sessions 5 
 
 ## Further Notes
 
-This PRD was not published to GitHub Issues because `gh` CLI is not available in this environment. The PRD is filed in the repo as `docs/prd-003-database-backend-for-job-tracking.md` and should be reviewed before implementation begins.
+Published as `docs/prd-003-database-backend-for-job-tracking.md`.

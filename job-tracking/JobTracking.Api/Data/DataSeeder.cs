@@ -4,22 +4,6 @@ namespace JobTracking.Api.Data;
 
 public static class DataSeeder
 {
-    private static readonly (int Order, string Label)[] DefaultMilestones =
-    [
-        (1, "Designed"),
-        (2, "Sent for approval"),
-        (3, "Approved to build"),
-        (4, "Production started"),
-        (5, "Components machined and assembled"),
-        (6, "Components finished"),
-        (7, "Final assembly done"),
-        (8, "Loaded"),
-        (9, "Delivered"),
-        (10, "Billed"),
-        (11, "Paid"),
-        (12, "Closed"),
-    ];
-
     public static async Task SeedAsync(JobTrackingDbContext db)
     {
         if (db.Customers.Any())
@@ -73,7 +57,7 @@ public static class DataSeeder
     private static List<Milestone> CreateMilestones(int completeUpTo)
     {
         var milestones = new List<Milestone>();
-        foreach (var (order, label) in DefaultMilestones)
+        foreach (var (order, label) in DefaultMilestones.All)
         {
             milestones.Add(new Milestone
             {

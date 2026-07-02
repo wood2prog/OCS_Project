@@ -130,4 +130,4 @@ The API `Program.cs` already calls `db.Database.EnsureCreatedAsync()` somewhere?
 
 ## Further Notes
 
-This PRD was not published to GitHub Issues because `gh` CLI is not available in this environment. The PRD is filed in the repo as `docs/prd-004-connect-frontend-to-database.md`.
+Published as `docs/prd-004-connect-frontend-to-database.md`.
